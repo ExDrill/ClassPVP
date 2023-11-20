@@ -14,6 +14,10 @@ export default class Team {
 
     public start() {
         for (const player of this.players) {
+            player.removeTag('class_pvp:ready');
+            if (player.hasTag('class_pvp:eliminated'))
+                player.removeTag('class_pvp:eliminated');
+
             player.addTag(tagFromColor(this.color));
 
             player.setSpawnPoint({
@@ -23,7 +27,7 @@ export default class Team {
                 z: this.startPos.z
             });
             player.teleport(player.getSpawnPoint());
-            player.nameTag = `§${chatColor(this.color)}${player.name}`;
+            player.nameTag = `§${chatColor(this.color)}${player.name}§r`;
         }
 
         this.players[0]?.dimension.runCommand(`title @a[tag=${tagFromColor(this.color)}] title §aSTART`);
@@ -39,6 +43,10 @@ export default class Team {
             if (!this.hasColor(player)) continue;
 
             player.removeTag(tagFromColor(this.color));
+            if (player.hasTag('class_pvp:eliminated'))
+                player.removeTag('class_pvp:eliminated');
+
+            player.nameTag = player.name;
         }
     }
 
@@ -46,7 +54,10 @@ export default class Team {
         const idx = this.players.findIndex((player) =>
             player.id === remove.id);
 
-        this.players[idx].removeTag(tagFromColor(this.color));
+        const player = this.players[idx];
+        player.removeTag(tagFromColor(this.color));
+        player.nameTag = player.name;
+
         this.players.splice(idx, 0);
     }
 

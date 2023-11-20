@@ -1,16 +1,29 @@
-import { world } from '@minecraft/server'
+import { world, Player } from '@minecraft/server'
 import Game from './gamemode/game';
 import Team from './team'
-import { Color, randomColor, tagPrefix, tagFromColor } from './gamemode/colors'
+import { Color, randomColor, tagPrefix } from './gamemode/colors'
 
 let game: Game;
 
 world.afterEvents.chatSend.subscribe((event) => {
     switch (event.message) {
+        case 'ready': {
+            event.sender.addTag('class_pvp:ready');
+            break;
+        }
+        case 'unready': {
+            if (!event.sender.hasTag('class_pvp:ready')) return;
+
+            event.sender.removeTag('class_pvp:ready');
+            break;
+        }
         case 'start': {
             if (game) game.end();
 
-            game = new Game([new Team(randomColor(), [event.sender], { x: 0, y: 0, z: 0 })]);
+            const readyPlayers = world.getAllPlayers().filter((player) =>
+                player.hasTag('class_pvp:ready'));
+
+            game = new Game([new Team(randomColor(), readyPlayers, { x: 0, y: 0, z: 0 })]);
             game.start();
             break;
         }
@@ -46,16 +59,16 @@ world.afterEvents.chatSend.subscribe((event) => {
     }
 })
 
-world.beforeEvents.playerLeave.subscribe((event) => {
+world.afterEvents.entityDie.subscribe((event) => {
     if (!game) return;
+    if (!(event.deadEntity instanceof Player)) return;
 
-    const tag: string = event.player.getTags().find((tag) =>
-        tag.startsWith(tagPrefix));
-    if (!tag) return;
+    const player: Player = event.deadEntity as Player;
+    const team: Team = game.getPlayerTeam(player);
 
-    const targetColor: Color = Color[tag.substring(tagPrefix.length)];
-    const team: Team = game.getTeamByColor(targetColor);
     if (!team) return;
 
-    team.removePlayer(event.player);
+    player.addTag('class_pvp:eliminated');
+    player.runCommand('gamemode spectator');
+    // player.dimension.runCommand('')
 })
