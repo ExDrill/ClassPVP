@@ -1,16 +1,27 @@
-import { system, world } from '@minecraft/server'
-import Team from '../Team'
+import Team from '../team'
+import { Color } from './colors'
 
-class Game {
+export default class Game {
 	public teams: Team[];
 
 	public constructor(teams: Team[]) {
 		this.teams = teams;
 	}
 
+	public getTeamByColor(color: Color): Team {
+		return this.teams.find((team) =>
+			Color[team.color].valueOf() === Color[color].valueOf());
+	}
+
 	public start() {
 		for (const team of this.teams) {
 			team.start();
+		}
+	}
+
+	public end() {
+		for (const team of this.teams) {
+			team.end();
 		}
 	}
 }
