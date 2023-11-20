@@ -1,0 +1,51 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"The Place"
+		]
+	},
+	"header": {
+		"name": "Class PVP",
+		"description": "Contains behavior files for Class PVP",
+		"min_engine_version": [
+			1,
+			20,
+			40
+		],
+		"uuid": "914e21f0-9f8b-42db-a363-7311c88ca5fc",
+		"version": [
+			1,
+			0,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"uuid": "81c8826d-88da-42d6-9b26-4790561d7fd0",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"type": "script",
+			"language": "javascript",
+			"uuid": "d10b6bb9-80f0-413e-befe-4e12a9fefd01",
+			"entry": "scripts/main.js",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.7.0-beta"
+		}
+	]
+}
