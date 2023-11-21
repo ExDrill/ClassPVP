@@ -1,9 +1,9 @@
 import { world, Player } from '@minecraft/server'
-import Game from './gamemode/game';
-import Team from './team'
-import { Color, randomColor, tagPrefix } from './gamemode/colors'
+import RoundManager from './gamemode/roundManager';
+//import Team from './team'
+//import { Color, randomColor, tagPrefix } from './gamemode/colors'
 
-let game: Game;
+let round: RoundManager;
 
 world.afterEvents.chatSend.subscribe((event) => {
     switch (event.message) {
@@ -18,17 +18,18 @@ world.afterEvents.chatSend.subscribe((event) => {
             break;
         }
         case 'start': {
-            if (game) game.end();
+            if (round) round.endRound();
 
             const readyPlayers = world.getAllPlayers().filter((player) =>
                 player.hasTag('class_pvp:ready'));
 
-            game = new Game([new Team(randomColor(), readyPlayers, { x: 0, y: 0, z: 0 })]);
-            game.start();
+            round = new RoundManager()
+            round.startRound()
             break;
         }
+        /*
         case 'elim': {
-            if (!game) {
+            if (!round) {
                 event.sender.sendMessage('start a game to run this command');
                 return;
             }
@@ -39,32 +40,35 @@ world.afterEvents.chatSend.subscribe((event) => {
 
             const targetColor: Color = Color[tag.substring(tagPrefix.length)];
 
-            const team: Team = game.getTeamByColor(targetColor);
+            const team: Team = round.getTeamByColor(targetColor);
             if (!team) return;
             team.eliminate();
 
             event.sender.sendMessage(`${Color[targetColor]} team eliminated.`);
             break;
         }
+        */
         case 'end': {
-            if (!game) {
+            if (!round) {
                 event.sender.sendMessage('start a game to run this command');
                 return;
             }
 
-            game.end();
-            game = undefined;
+            round.endRound()
+            round = undefined;
             break;
         }
     }
 })
 
+// EVERYTHING COMMENTED IS BECAUSE IT'S NOT PORTED YET
+/*
 world.afterEvents.entityDie.subscribe((event) => {
-    if (!game) return;
+    if (!round) return;
     if (!(event.deadEntity instanceof Player)) return;
 
     const player: Player = event.deadEntity as Player;
-    const team: Team = game.getPlayerTeam(player);
+    const team: Team = round.getPlayerTeam(player);
 
     if (!team) return;
 
@@ -72,3 +76,4 @@ world.afterEvents.entityDie.subscribe((event) => {
     player.runCommand('gamemode spectator');
     // player.dimension.runCommand('')
 })
+*/

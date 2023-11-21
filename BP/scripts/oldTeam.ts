@@ -1,3 +1,6 @@
+// COMMENTED THIS OUT AS REFERENCE, I HAVEN'T GOTTEN AROUND TO PORTING
+
+/*
 import { Player, Vector3 } from '@minecraft/server';
 import { chatColor, Color, tagFromColor } from './gamemode/colors'
 
@@ -65,3 +68,4 @@ export default class Team {
         return player.hasTag(tagFromColor(this.color));
     }
 }
+*/

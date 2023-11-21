@@ -5,55 +5,31 @@
 			"identifier": "minecraft:player",
 			"is_spawnable": false,
 			"is_summonable": false,
-			"is_experimental": false
-		},
-		"component_groups": {
-			"minecraft:add_bad_omen": {
-				"minecraft:spell_effects": {
-					"add_effects": [
-						{
-							"effect": "bad_omen",
-							"duration": 6000,
-							"visible": false,
-							"display_on_screen_animation": true
-						}
-					]
-				},
-				"minecraft:timer": {
-					"time": [
-						0,
-						0
+			"is_experimental": false,
+			"properties": {
+				"class_pvp:team": {
+					"default": "none",
+					"values": [
+						"none",
+						"quartz",
+						"iron",
+						"netherite",
+						"redstone",
+						"copper",
+						"gold",
+						"emerald",
+						"diamond",
+						"lapis",
+						"amethyst"
 					],
-					"looping": false,
-					"time_down_event": {
-						"event": "minecraft:clear_add_bad_omen",
-						"target": "self"
-					}
-				}
-			},
-			"minecraft:clear_bad_omen_spell_effect": {
-				"minecraft:spell_effects": {}
-			},
-			"minecraft:raid_trigger": {
-				"minecraft:raid_trigger": {
-					"triggered_event": {
-						"event": "minecraft:remove_raid_trigger",
-						"target": "self"
-					}
-				},
-				"minecraft:spell_effects": {
-					"remove_effects": "bad_omen"
+					"client_sync": false
 				}
 			}
 		},
+		"component_groups": {},
 		"components": {
-			"minecraft:experience_reward": {
-				"on_death": "Math.Min(query.player_level * 7, 100)"
-			},
 			"minecraft:type_family": {
-				"family": [
-					"player"
-				]
+				"family": [ "player" ]
 			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:loot": {
@@ -147,61 +123,8 @@
 				]
 			},
 			"minecraft:conditional_bandwidth_optimization": {},
-			"minecraft:block_climber": {},
-			"minecraft:environment_sensor": {
-				"triggers": {
-					"filters": {
-						"all_of": [
-							{
-								"test": "has_mob_effect",
-								"subject": "self",
-								"value": "bad_omen"
-							},
-							{
-								"test": "is_in_village",
-								"subject": "self",
-								"value": true
-							}
-						]
-					},
-					"event": "minecraft:trigger_raid"
-				}
-			}
+			"minecraft:block_climber": {}
 		},
-		"events": {
-			"minecraft:gain_bad_omen": {
-				"add": {
-					"component_groups": [
-						"minecraft:add_bad_omen"
-					]
-				}
-			},
-			"minecraft:clear_add_bad_omen": {
-				"remove": {
-					"component_groups": [
-						"minecraft:add_bad_omen"
-					]
-				},
-				"add": {
-					"component_groups": [
-						"minecraft:clear_bad_omen_spell_effect"
-					]
-				}
-			},
-			"minecraft:trigger_raid": {
-				"add": {
-					"component_groups": [
-						"minecraft:raid_trigger"
-					]
-				}
-			},
-			"minecraft:remove_raid_trigger": {
-				"remove": {
-					"component_groups": [
-						"minecraft:raid_trigger"
-					]
-				}
-			}
-		}
+		"events": {}
 	}
 }
