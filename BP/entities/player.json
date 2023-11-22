@@ -58,6 +58,32 @@
 					}
 				]
 			},
+			// Handles friendly fire
+			"minecraft:damage_sensor": {
+				"triggers": [
+					{
+						"on_damage": {
+							"filters": {
+								"all_of": [
+									{
+										"test": "enum_property",
+										"domain": "class_pvp:team",
+										"subject": "self",
+										"value": "none"
+									},
+									{
+										"test": "enum_property",
+										"domain": "class_pvp:team",
+										"subject": "damager",
+										"value": "none"
+									}
+								]
+							}
+						},
+						"deals_damage": false
+					}
+				]
+			},
 			"minecraft:attack": {
 				"damage": 1
 			},
