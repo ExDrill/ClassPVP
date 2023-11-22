@@ -1,10 +1,13 @@
 import { world, system, Player } from '@minecraft/server'
+import ScoreboardManager from './scoreboardManager'
 import * as TeamUtils from '../utils/teams'
 
 export default class RoundManager {
 	private ongoingRound?: number
+	public scoreboardManager: ScoreboardManager
 
 	public constructor(roundTimeTicks: number = 4800) {
+		this.scoreboardManager = new ScoreboardManager()
 		world.setDynamicProperty('class_pvp:round_time', roundTimeTicks)
 	}
 
@@ -25,9 +28,10 @@ export default class RoundManager {
 	}
 
 	public getPlayers(): Player[] {
-		return world.getAllPlayers().filter(player => 
-			player.getDynamicProperty('class_pvp:playing')
-		)
+		return world.getAllPlayers().filter(player => {
+			const isPlaying = player.getDynamicProperty('class_pvp:playing')
+			return isPlaying as boolean
+		})
 	}
 
 	public tick() {
@@ -59,5 +63,15 @@ export default class RoundManager {
 
 	public getRoundTime(): number {
 		return world.getDynamicProperty('class_pvp:round_time') as number
+	}
+
+	public cleanup(): void {
+		for (const player of this.getPlayers()) {
+			this.cleanupPlayer(player)
+		}
+	}
+
+	public cleanupPlayer(player: Player) {
+		this.scoreboardManager.setScore(player, 'class_pvp:eliminations', 0)
 	}
 }

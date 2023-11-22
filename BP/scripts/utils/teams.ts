@@ -21,8 +21,8 @@ export function getColorCode(player: Player): string {
     return teams[team]
 }
 
-export function applyRandomTeam(): Team {
+export function applyRandomTeam(): string {
     const keys = Object.keys(Team)
-    const chosenTeam = keys[randomBetween(0, keys.length - 1)]
+    const chosenTeam = keys[randomBetween(1, keys.length - 1)]
     return Team[chosenTeam];
 }
