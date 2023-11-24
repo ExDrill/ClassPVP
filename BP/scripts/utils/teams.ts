@@ -2,27 +2,25 @@ import { Player } from "@minecraft/server";
 import { Team } from './enums'
 import { randomBetween } from './math'
 
-const teams = {
-    none: 'r',
-    quartz: 'h',
-    iron: 'i',
-    netherite: 'j',
-    redstone: 'm',
-    copper: 'n',
-    gold: 'p',
-    emerald: 'q',
-    diamond: 's',
-    lapis: 't',
-    amethyst: 'u'
-}
+const teams: Map<string, string> = new Map()
+teams.set('none', 'r')
+teams.set('quartz', 'h')
+teams.set('iron', 'i')
+teams.set('netherite', 'j')
+teams.set('redstone', 'm')
+teams.set('copper', 'n')
+teams.set('gold', 'p')
+teams.set('emerald', 's')
+teams.set('lapis', 't')
+teams.set('amethyst', 'u')
 
 export function getColorCode(player: Player): string {
     const team = player.getProperty('class_pvp:team') as string
-    return teams[team]
+    return teams.get(team)
 }
 
 export function applyRandomTeam(): string {
-    const keys = Object.keys(Team)
-    const chosenTeam = keys[randomBetween(1, keys.length - 1)]
-    return Team[chosenTeam];
+    const values = Object.values(Team)
+    const chosenTeam = values[randomBetween(1, values.length - 1)]
+    return chosenTeam
 }

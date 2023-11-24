@@ -23,7 +23,7 @@ export default class RoundManager {
 	private setTeams() {
 		for (const player of this.getPlayers()) {
 			player.setProperty('class_pvp:team', TeamUtils.applyRandomTeam())
-			player.nameTag = `§${TeamUtils.getColorCode(player)}${player.name}`
+			this.formatPlayerName(player)
 		}
 	}
 
@@ -32,6 +32,10 @@ export default class RoundManager {
 			const isPlaying = player.getDynamicProperty('class_pvp:playing')
 			return isPlaying as boolean
 		})
+	}
+
+	public formatPlayerName(player: Player): void {
+		player.nameTag = `§${TeamUtils.getColorCode(player)}${player.name}`
 	}
 
 	public tick() {
@@ -46,11 +50,14 @@ export default class RoundManager {
 	}
 	
 	public endRound() {
-		if (this.ongoingInterval) {
-			system.clearRun(this.ongoingInterval)
+		if (!this.ongoingInterval) {
+			world.sendMessage('There is currently no ongoing round!')
 			return
 		}
-		world.sendMessage('There is currently no ongoing round!')
+		this.setRoundTime(0)
+		system.clearRun(this.ongoingInterval)
+		this.ongoingInterval = undefined
+		this.cleanup()
 	}
 
 	public isOngoingRound(): boolean {
@@ -72,6 +79,9 @@ export default class RoundManager {
 	}
 
 	public cleanupPlayer(player: Player) {
-		this.scoreboardManager.setScore(player, 'class_pvp:eliminations', 0)
+		if (this.scoreboardManager.getObjective('class_pvp:eliminations')) {
+			this.scoreboardManager.setScore(player, 'class_pvp:eliminations', 0)
+		}
+		player.setProperty('class_pvp:team', 'none')
 	}
 }
