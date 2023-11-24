@@ -3,21 +3,21 @@ import ScoreboardManager from './scoreboardManager'
 import * as TeamUtils from '../utils/teams'
 
 export default class RoundManager {
-	private ongoingRound?: number
+	private ongoingInterval?: number
 	public scoreboardManager: ScoreboardManager
 
-	public constructor(roundTimeTicks: number = 4800) {
+	public constructor() {
 		this.scoreboardManager = new ScoreboardManager()
-		world.setDynamicProperty('class_pvp:round_time', roundTimeTicks)
 	}
 
 	public startRound() {
-		if (this.ongoingRound) {
+		if (this.ongoingInterval) {
 			world.sendMessage('There is already an ongoing round!')
 			return
 		}
 		this.setTeams()
-		this.ongoingRound = system.runInterval(() => this.tick(), 1)
+		this.setRoundTime(4800)
+		this.ongoingInterval = system.runInterval(() => this.tick(), 1)
 	}
 	
 	private setTeams() {
@@ -46,8 +46,8 @@ export default class RoundManager {
 	}
 	
 	public endRound() {
-		if (this.ongoingRound) {
-			system.clearRun(this.ongoingRound)
+		if (this.ongoingInterval) {
+			system.clearRun(this.ongoingInterval)
 			return
 		}
 		world.sendMessage('There is currently no ongoing round!')
