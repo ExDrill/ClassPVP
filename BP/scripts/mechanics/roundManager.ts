@@ -23,19 +23,8 @@ export default class RoundManager {
 	private setTeams() {
 		for (const player of this.getPlayers()) {
 			player.setProperty('class_pvp:team', TeamUtils.applyRandomTeam())
-			this.formatPlayerName(player)
+			player.nameTag = `§${TeamUtils.getColorCode(player)}${player.name}`
 		}
-	}
-
-	public getPlayers(): Player[] {
-		return world.getAllPlayers().filter(player => {
-			const isPlaying = player.getDynamicProperty('class_pvp:playing')
-			return isPlaying as boolean
-		})
-	}
-
-	public formatPlayerName(player: Player): void {
-		player.nameTag = `§${TeamUtils.getColorCode(player)}${player.name}`
 	}
 
 	public tick() {
@@ -54,9 +43,7 @@ export default class RoundManager {
 			world.sendMessage('There is currently no ongoing round!')
 			return
 		}
-		this.setRoundTime(0)
 		system.clearRun(this.ongoingInterval)
-		this.ongoingInterval = undefined
 		this.cleanup()
 	}
 
@@ -76,6 +63,8 @@ export default class RoundManager {
 		for (const player of this.getPlayers()) {
 			this.cleanupPlayer(player)
 		}
+		this.setRoundTime(0)
+		this.ongoingInterval = undefined
 	}
 
 	public cleanupPlayer(player: Player) {
@@ -83,5 +72,12 @@ export default class RoundManager {
 			this.scoreboardManager.setScore(player, 'class_pvp:eliminations', 0)
 		}
 		player.setProperty('class_pvp:team', 'none')
+	}
+
+	public getPlayers(): Player[] {
+		return world.getAllPlayers().filter(player => {
+			const inGame = player.getDynamicProperty('class_pvp:in_game')
+			return inGame as boolean
+		})
 	}
 }

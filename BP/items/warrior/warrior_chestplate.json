@@ -1,0 +1,14 @@
+{
+    "format_version": "1.20.40",
+    "minecraft:item": {
+        "description": {
+            "identifier": "class_pvp:warrior_chestplate"
+        },
+        "components": {
+            "class_pvp:armor": {
+                "slot": "chestplate",
+                "protection": 4
+            }
+        }
+    }
+}

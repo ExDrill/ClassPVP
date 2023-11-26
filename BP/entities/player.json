@@ -27,7 +27,13 @@
 				}
 			}
 		},
-		"component_groups": {},
+		"component_groups": {
+			"class_pvp:increase_speed": {
+				"minecraft:movement": {
+					"value": 0.15
+				}
+			}
+		},
 		"components": {
 			"class_pvp:disable_friendly_fire": {},
 			"minecraft:type_family": {
@@ -127,6 +133,21 @@
 			"minecraft:conditional_bandwidth_optimization": {},
 			"minecraft:block_climber": {}
 		},
-		"events": {}
+		"events": {
+			"class_pvp:warrior": {
+				"add": {
+					"component_groups": [
+						"class_pvp:increase_speed"
+					]
+				}
+			},
+			"minecraft:entity_spawned": {
+				"remove": {
+					"component_groups": [
+						"class_pvp:increase_speed"
+					]
+				}
+			}
+		}
 	}
 }

@@ -20,11 +20,6 @@ world.afterEvents.chatSend.subscribe(event => {
         if (msg == 'end') {
             ROUND.endRound()
         }
-        if (msg == 'get') {
-            console.warn(sender.getProperty('class_pvp:team') as string)
-            ROUND.formatPlayerName(sender)
-            console.warn(sender.nameTag)
-        }
     }
 })
 
