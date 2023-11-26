@@ -2,12 +2,12 @@
     "format_version": "1.20.40",
     "minecraft:item": {
         "description": {
-            "identifier": "class_pvp:warrior_helmet"
+            "identifier": "class_pvp:warrior_boots"
         },
         "components": {
             "class_pvp:armor": {
-                "slot": "helmet",
-                "protection": 3
+                "protection": 3,
+                "slot": "boots"
             }
         }
     }

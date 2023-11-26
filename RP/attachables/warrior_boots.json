@@ -2,18 +2,18 @@
     "format_version": "1.10.0",
     "minecraft:attachable": {
         "description": {
-            "identifier": "class_pvp:warrior_chestplate",
+            "identifier": "class_pvp:warrior_boots",
             "materials": {
                 "default": "armor"
             },
             "textures": {
-                "default": "textures/entity/warrior/warrior_chestplate"
+                "default": "textures/entity/warrior/warrior_boots"
             },
             "geometry": {
-                "default": "geometry.template_chestplate"
+                "default": "geometry.template_boots"
             },
             "scripts": {
-                "parent_setup": "variable.chest_layer_visible = 0.0;"
+                "parent_setup": "variable.boot_layer_visible = 0.0;"
             },
             "render_controllers": [
                 "controller.render.default"

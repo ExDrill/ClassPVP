@@ -27,14 +27,19 @@
 				}
 			}
 		},
-		"component_groups": {
-			"class_pvp:increase_speed": {
-				"minecraft:movement": {
-					"value": 0.15
-				}
-			}
-		},
 		"components": {
+			"class_pvp:class_definitions": {
+				"none": {
+					"max_health": 20,
+					"movement_speed": 0.1,
+					"scale": 1.0
+				},
+				"warrior": {
+					"max_health": 20,
+					"movement_speed": 0.1,
+					"scale": 1.0
+				}
+			},
 			"class_pvp:disable_friendly_fire": {},
 			"minecraft:type_family": {
 				"family": [ "player" ]
@@ -133,21 +138,6 @@
 			"minecraft:conditional_bandwidth_optimization": {},
 			"minecraft:block_climber": {}
 		},
-		"events": {
-			"class_pvp:warrior": {
-				"add": {
-					"component_groups": [
-						"class_pvp:increase_speed"
-					]
-				}
-			},
-			"minecraft:entity_spawned": {
-				"remove": {
-					"component_groups": [
-						"class_pvp:increase_speed"
-					]
-				}
-			}
-		}
+		"events": {}
 	}
 }
