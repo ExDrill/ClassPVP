@@ -38,6 +38,11 @@
 					"max_health": 20,
 					"movement_speed": 0.1,
 					"scale": 1.0
+				},
+				"archer": {
+					"max_health": 15,
+					"movement_speed": 0.12,
+					"scale": 1.0
 				}
 			},
 			"class_pvp:disable_friendly_fire": {},
