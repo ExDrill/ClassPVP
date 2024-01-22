@@ -1,7 +1,15 @@
-import { world, Entity, ScoreboardObjective } from '@minecraft/server'
+import { world, Entity, ScoreboardObjective, DisplaySlotId, ObjectiveSortOrder } from '@minecraft/server'
 
 export function createObjective(id: string, displayName: string = id): void {
     world.scoreboard.addObjective(id, displayName)
+}
+
+export function positionObjective(id: string, displaySlot: DisplaySlotId, sortOrder: ObjectiveSortOrder): void {
+    const objective = world.scoreboard.getObjective(id)
+    world.scoreboard.setObjectiveAtDisplaySlot(displaySlot, {
+        objective: objective,
+        sortOrder: sortOrder
+    })
 }
 
 export function deleteObjective(id: string): void {
