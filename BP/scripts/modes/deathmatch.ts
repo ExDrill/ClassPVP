@@ -6,7 +6,6 @@ import { shuffle } from '../utils/helper'
 import { getTeams, getTeamColor } from '../utils/teams'
 
 export default class Deathmatch extends Gamemode {
-
     public addObjectives(): void {
         createObjective('class_pvp:eliminations', 'Eliminations')
         createObjective('class_pvp:health', 'Health')
@@ -23,6 +22,10 @@ export default class Deathmatch extends Gamemode {
         world.afterEvents.entityDie.unsubscribe(Events.rewardScore)
         world.afterEvents.entityDie.unsubscribe(Events.healthOnKill)
         world.afterEvents.entityHealthChanged.unsubscribe(Events.healthDisplay)
+    }
+
+    public getName() {
+        return 'deathmatch'
     }
 
     public assignTeams(): void {
