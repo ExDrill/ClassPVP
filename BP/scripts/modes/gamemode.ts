@@ -3,11 +3,7 @@ import { removeObjectives } from '../utils/scoreboard'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
-    private roundDurationTicks: number
-
-    public constructor(roundDurationTicks = 4800) {
-        this.roundDurationTicks = roundDurationTicks
-    }
+    private roundDurationTicks: number = 4800
 
     public startRound(): void {
         if (this.ongoingInterval) {
@@ -63,6 +59,10 @@ export default abstract class Gamemode {
         else {
             Gamemode.setRoundTime(roundTime - 1)
         }
+    }
+
+    public setRoundDuration(durationTicks: number): void {
+        this.roundDurationTicks = durationTicks
     }
 
     protected static getRoundTime(): number {

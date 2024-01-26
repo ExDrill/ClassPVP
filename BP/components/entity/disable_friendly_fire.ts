@@ -1,15 +1,13 @@
 const teams = [
 	'none',
-	'quartz',
-	'iron',
-	'netherite',
-	'redstone',
-	'copper',
-	'gold',
-	'emerald',
-	'diamond',
-	'lapis',
-	'amethyst'
+	'red',
+	'blue',
+	'green',
+	'yellow',
+	'aqua',
+	'white',
+	'pink',
+	'grey'
 ]
 
 export default defineComponent((context) => {
