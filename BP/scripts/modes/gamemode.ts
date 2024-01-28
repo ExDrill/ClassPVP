@@ -1,5 +1,6 @@
 import { world, system } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
+import * as Events from '../mechanics/events'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
@@ -10,6 +11,7 @@ export default abstract class Gamemode {
             console.warn('Warning: There is already an ongoing round!')
             return
         }
+        world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
         this.ongoingInterval = system.runInterval(this.tick, 1)
         this.enableEvents()
         this.addObjectives()
@@ -32,7 +34,7 @@ export default abstract class Gamemode {
      * Override to add scoreboard objectives
      */
     public abstract addObjectives(): void
-    
+
     /**
      * Override to subscribe to all needed events
      */

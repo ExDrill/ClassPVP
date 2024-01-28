@@ -1,5 +1,7 @@
-import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent } from '@minecraft/server'
+import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, system } from '@minecraft/server'
 import { setScore } from '../utils/scoreboard'
+import { gamemodes, propertyGamemodes } from '../main'
+import Gamemode from '../modes/gamemode'
 
 export function healthOnKill(event: EntityDieAfterEvent): void {
     const damageSource = event.damageSource
@@ -37,4 +39,18 @@ export function healthDisplay(event: EntityHealthChangedAfterEvent): void {
 
     if (entity.typeId !== 'minecraft:player') return
     setScore('class_pvp:health', entity, health)
+}
+
+export function signVote(event: PlayerInteractWithBlockAfterEvent): void {
+    const player = event.player
+    const block = event.block
+    const sign = block.getComponent(BlockComponentTypes.Sign)
+    if (!sign || !sign.isWaxed) return
+
+    const text = sign.getText()
+    const gamemode: Gamemode = gamemodes[text]
+    if (!gamemode) return
+
+    player.setProperty('class_pvp:vote', propertyGamemodes[text])
+    system.runTimeout(() => console.warn(player.getProperty('class_pvp:vote') as string), 1)
 }

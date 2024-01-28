@@ -22,6 +22,16 @@
 						"grey"
 					],
 					"client_sync": false
+				},
+				"class_pvp:vote": {
+					"type": "enum",
+					"default": "none",
+					"values": [
+						"none",
+						"deathmatch",
+						"team_deathmatch"
+					],
+					"client_sync": false
 				}
 			}
 		},
@@ -45,7 +55,9 @@
 			},
 			"class_pvp:disable_friendly_fire": {},
 			"minecraft:type_family": {
-				"family": [ "player" ]
+				"family": [
+					"player"
+				]
 			},
 			"minecraft:is_hidden_when_invisible": {},
 			"minecraft:loot": {

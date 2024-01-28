@@ -25,10 +25,6 @@ export default class TeamDeathmatch extends Gamemode {
         world.afterEvents.entityHealthChanged.unsubscribe(Events.healthDisplay)
     }
 
-    public getName() {
-        return 'team deathmatch'
-    }
-
     public assignTeams() {
         const shuffledPlayers = shuffle(world.getAllPlayers())
         const shuffledTeams = shuffle(getTeams())
