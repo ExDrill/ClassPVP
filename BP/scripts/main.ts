@@ -1,8 +1,7 @@
-import { world, system } from '@minecraft/server'
+import { world } from '@minecraft/server'
 import Deathmatch from './modes/deathmatch'
 import TeamDeathmatch from './modes/teamDeathmatch'
-import * as Events from './mechanics/events'
-
+import * as Lobby from './mechanics/lobby'
 /**
  * Registry for gamemodes 
  */
@@ -17,14 +16,5 @@ export const propertyGamemodes = {
     'Team Deathmatch': 'team_deathmatch'
 }
 
-world.afterEvents.worldInitialize.subscribe(event => {
-    // Stop current game
-})
-
-world.afterEvents.playerJoin.subscribe(event => {
-    const player = world.getPlayers({ name: event.playerName })[0]
-    player.setProperty('class_pvp:vote', 'none')
-    console.warn(player.getProperty('class_pvp:vote') as string)
-})
-
-world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
+world.afterEvents.worldInitialize.subscribe(Lobby.initEndRound)
+world.afterEvents.playerJoin.subscribe(Lobby.removeVoteOnJoin)

@@ -1,18 +1,20 @@
 import { world, system } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
+import { endGame } from '../mechanics/lobby'
 import * as Events from '../mechanics/events'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
-    private roundDurationTicks: number = 4800
+    // private roundDurationTicks: number = 4800
+    private roundDurationTicks = 400
 
     public startRound(): void {
         if (this.ongoingInterval) {
             console.warn('Warning: There is already an ongoing round!')
             return
         }
-        world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
         this.ongoingInterval = system.runInterval(this.tick, 1)
+        world.beforeEvents.chatSend.subscribe(Events.chatColor)
         this.enableEvents()
         this.addObjectives()
         this.assignTeams()
@@ -20,12 +22,14 @@ export default abstract class Gamemode {
     }
 
     public endRound(): void {
-        if (!this.ongoingInterval) {
-            console.warn('Warning: There is currently no ongoing round!')
-            return
-        }
-        system.clearRun(this.ongoingInterval)
+        // if (!this.ongoingInterval) {
+        //     console.warn('Warning: There is currently no ongoing round!')
+        //     return
+        // }
+        if (this.ongoingInterval)
+            system.clearRun(this.ongoingInterval)
         this.ongoingInterval = undefined
+        world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
         this.disableEvents()
         removeObjectives()
     }
@@ -56,7 +60,7 @@ export default abstract class Gamemode {
     public tick(): void {
         const roundTime = Gamemode.getRoundTime()
         if (roundTime - 1 == 0) {
-            this.endRound()
+            endGame()
         }
         else {
             Gamemode.setRoundTime(roundTime - 1)

@@ -31,6 +31,7 @@ export default class TeamDeathmatch extends Gamemode {
 
         const teamOne = shuffledTeams[0]
         const teamTwo = shuffledTeams[1]
+        console.warn(`${teamOne} and ${teamTwo}`)
 
         const playersOne = shuffledPlayers.slice(0, shuffledPlayers.length / 2)
         const playersTwo = shuffledPlayers.slice(shuffledPlayers.length / 2)

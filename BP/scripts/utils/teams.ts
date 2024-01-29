@@ -1,7 +1,7 @@
 import { Player } from "@minecraft/server";
 
 const teams = {
-    none: 'r',
+    none: '§r',
     red: '§c',
     blue: '§9',
     green: '§a',
@@ -24,5 +24,7 @@ export function getTeamColor(player: Player): string {
  * @returns {string} Returns a list of playable teams
  */
 export function getTeams() {
-    return Object.keys(teams).splice(0, 1)
+    const arr = Object.keys(teams)
+    arr.splice(0, 1)
+    return arr
 }
