@@ -1,9 +1,9 @@
 import { world, DisplaySlotId, ObjectiveSortOrder } from '@minecraft/server'
 import Gamemode from './gamemode'
-import { createObjective, positionObjective } from '../utils/scoreboard'
+import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
 import * as Events from '../mechanics/events'
 import { shuffle } from '../utils/helper'
-import { getTeams, getTeamColor } from '../utils/teams'
+import { getTeams, getTeamColor, teams } from '../utils/teams'
 
 export default class TeamDeathmatch extends Gamemode {
     public addObjectives() {
@@ -31,7 +31,6 @@ export default class TeamDeathmatch extends Gamemode {
 
         const teamOne = shuffledTeams[0]
         const teamTwo = shuffledTeams[1]
-        console.warn(`${teamOne} and ${teamTwo}`)
 
         const playersOne = shuffledPlayers.slice(0, shuffledPlayers.length / 2)
         const playersTwo = shuffledPlayers.slice(shuffledPlayers.length / 2)
@@ -45,5 +44,31 @@ export default class TeamDeathmatch extends Gamemode {
             player.setProperty('class_pvp:team', teamTwo)
             player.nameTag = `${getTeamColor(player)}${player.name}`
         }
+
+        setScore('class_pvp:eliminations', teams[teamOne] + teamOne, 0)
+        setScore('class_pvp:eliminations', teams[teamTwo] + teamTwo, 0)
+    }
+
+    public endRound() {
+        this.determineWinner()
+        super.endRound()
+    }
+
+    private determineWinner() {
+        const objective = world.scoreboard.getObjective('class_pvp:eliminations')
+        if (!objective) return
+
+        const teamOne = objective.getParticipants()[0].displayName
+        const teamTwo = objective.getParticipants()[1].displayName
+
+        const oneScore = objective.getScore(teamOne)
+        const twoScore = objective.getScore(teamTwo)
+        const overworld = world.getDimension('overworld')
+        if (oneScore > twoScore)
+            overworld.runCommandAsync(`title @a title ${teamOne} wins§r`)
+        else if (twoScore > oneScore)
+            overworld.runCommandAsync(`title @a title ${teamTwo} wins§r`)
+        else
+            overworld.runCommandAsync(`title @a title tie`)
     }
 }

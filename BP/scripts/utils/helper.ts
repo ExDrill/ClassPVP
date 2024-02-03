@@ -2,6 +2,10 @@ export function randomBetween(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+/**
+ * @param {T[]} array Original array
+ * @returns New shuffled array
+ */
 export function shuffle<T>(array: T[]): T[] {
     const newArray: T[] = []
     const remainingElements = Array.from(array)
@@ -13,6 +17,23 @@ export function shuffle<T>(array: T[]): T[] {
     }
 
     return newArray
+}
+
+/**
+ * @param {T} find Value to find
+ * @param {{}} obj Object literal to find value in
+ * @returns Key of value
+ */
+export function keyOf<T>(find: T, obj: {}): string {
+    for (const entry of Object.entries<T>(obj)) {
+        const key = entry[0]
+        const value = entry[1]
+
+        if (value === find)
+            return key
+    }
+
+    return undefined
 }
 
 // export function shuffle<T>(array: T[]): T[] {

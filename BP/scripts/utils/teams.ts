@@ -1,6 +1,6 @@
 import { Player } from "@minecraft/server";
 
-const teams = {
+export const teams = {
     none: '§r',
     red: '§c',
     blue: '§9',

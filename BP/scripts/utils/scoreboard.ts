@@ -1,4 +1,4 @@
-import { world, Entity, ScoreboardObjective, DisplaySlotId, ObjectiveSortOrder } from '@minecraft/server'
+import { world, Entity, ScoreboardObjective, DisplaySlotId, ObjectiveSortOrder, ScoreboardIdentity } from '@minecraft/server'
 
 export function createObjective(id: string, displayName: string = id): void {
     world.scoreboard.addObjective(id, displayName)
@@ -26,14 +26,14 @@ export function removeObjectives(): void {
     }
 }
 
-export function getScore(objectiveID: string, participant: Entity): number {
+export function getScore(objectiveID: string, participant: string | Entity | ScoreboardIdentity): number {
     return world.scoreboard.getObjective(objectiveID).getScore(participant)
 }
 
-export function setScore(objectiveID: string, participant: Entity, score: number): void {
+export function setScore(objectiveID: string, participant: string | Entity | ScoreboardIdentity, score: number): void {
     world.scoreboard.getObjective(objectiveID).setScore(participant, score)
 }
 
-export function addScore(objectiveID: string, participant: Entity, score: number): void {
+export function addScore(objectiveID: string, participant: string | Entity | ScoreboardIdentity, score: number): void {
     world.scoreboard.getObjective(objectiveID).addScore(participant, score)
 }
