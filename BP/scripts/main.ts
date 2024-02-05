@@ -4,12 +4,13 @@ import TeamDeathmatch from './modes/teamDeathmatch'
 import * as Lobby from './mechanics/lobby'
 
 import PlayerClass from './playerClasses/playerClass'
+import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
 import EndCommand from './commands/end'
 import StartCommand from './commands/start'
-import SetCountdownCommand from './commands/set_countdown'
+import SetCountdownCommand from './commands/setCountdown'
 import EquipCommand from './commands/equip'
 
 /**
@@ -33,9 +34,10 @@ export const commands = {
     equip: new EquipCommand()
 }
 
-export const playerClasses: PlayerClass[] = [
-    new ArcherClass()
-]
+export const playerClasses: Map<string, PlayerClass> = new Map([
+    ['warrior', new WarriorClass()],
+    ['archer', new ArcherClass()]
+])
 
 world.afterEvents.worldInitialize.subscribe(Lobby.initEndRound)
 world.afterEvents.playerJoin.subscribe(Lobby.removeVoteOnJoin)

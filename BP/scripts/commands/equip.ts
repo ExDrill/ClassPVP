@@ -11,7 +11,7 @@ export default class EquipCommand extends Command {
     public run(event: ChatSendBeforeEvent, args?: (string|number)[]): void {
         const player = event.sender
         const chosenClass = args[0] as string
-        const playerClass = playerClasses.find(query => query.getID() == chosenClass)
+        const playerClass = playerClasses.get(chosenClass)
 
         if (chosenClass == 'none') {
             player.runCommand('clear @s')

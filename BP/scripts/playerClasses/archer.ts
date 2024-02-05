@@ -5,8 +5,6 @@ export default class ArcherClass extends PlayerClass {
 
     public constructor() {
         super('archer')
-
-        this.createEvents()
     }
 
     public createEvents(): void {
