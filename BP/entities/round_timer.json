@@ -1,0 +1,22 @@
+{
+    "format_version": "1.20.40",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "class_pvp:round_timer",
+            "is_spawnable": false,
+            "is_summonable": false,
+            "is_experimental": false
+        },
+        "components": {
+            "minecraft:health": {
+                "min": 0,
+                "max": 100
+            },
+            "minecraft:boss": {
+                "hud_range": 1000,
+                "name": "Round Time",
+                "should_darken_sky": false
+            }
+        }
+    }
+}

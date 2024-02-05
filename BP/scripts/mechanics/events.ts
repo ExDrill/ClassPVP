@@ -1,6 +1,6 @@
 import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, system, ChatSendBeforeEvent } from '@minecraft/server'
 import { setScore, addScore } from '../utils/scoreboard'
-import { gamemodes, propertyGamemodes } from '../main'
+import { gamemodes } from '../main'
 import Gamemode from '../modes/gamemode'
 import { getTeamColor, teams } from '../utils/teams'
 
@@ -51,7 +51,7 @@ export function signVote(event: PlayerInteractWithBlockAfterEvent): void {
     const gamemode: Gamemode = gamemodes[text]
     if (!gamemode) return
 
-    player.setProperty('class_pvp:vote', propertyGamemodes[text])
+    player.setProperty('class_pvp:vote', text)
 }
 
 export function chatColor(event: ChatSendBeforeEvent): void {

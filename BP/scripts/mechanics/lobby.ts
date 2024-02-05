@@ -1,8 +1,7 @@
 import { system, world, Player, WorldInitializeAfterEvent, PlayerJoinAfterEvent } from '@minecraft/server'
 import * as Events from './events'
-import { propertyGamemodes, gamemodes } from '../main'
+import { gamemodes } from '../main'
 import Gamemode from '../modes/gamemode'
-import { keyOf } from '../utils/helper'
 
 let intermissionInterval: number
 
@@ -55,9 +54,8 @@ export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
 }
 
 export function endGame(): void {
-    const property = world.getDynamicProperty('class_pvp:gamemode') as string
-    if (property && property !== 'none') {
-        const gameName = proptertyToName(property)
+    const gameName = world.getDynamicProperty('class_pvp:gamemode') as string
+    if (gameName && gameName !== 'none') {
         const gamemode = gamemodes[gameName] as Gamemode
         gamemode.endRound()
     }
@@ -66,22 +64,11 @@ export function endGame(): void {
 }
 
 /**
- * Converts the vote property string to a mode's name
- * @param {string} vote The vote property
- */
-export function proptertyToName(vote: string): string {
-    return keyOf(vote, propertyGamemodes)
-}
-
-/**
- * Converts the player's vote property to a mode's name
+ * Gets the player's vote
  * @param {Player} player The player
  */
-export function playerPropertyToName(player: Player): string {
-    const vote = player.getProperty('class_pvp:vote') as string
-    if (vote === 'none') return undefined
-
-    return proptertyToName(vote)
+export function getPlayerVote(player: Player): string {
+    return player.getDynamicProperty('class_pvp:vote') as string
 }
 
 /**
@@ -127,7 +114,7 @@ export function endVote(): void {
         voteMap.set(key, 0)
 
     for (const player of world.getAllPlayers()) {
-        let gamemode: string = playerPropertyToName(player);
+        let gamemode: string = getPlayerVote(player);
         if (!gamemode) continue
 
         const lastValue = voteMap.get(gamemode)
@@ -151,7 +138,7 @@ export function endVote(): void {
         gamemode = modeKeys[random]
     }
 
-    world.setDynamicProperty('class_pvp:gamemode', propertyGamemodes[gamemode])
+    world.setDynamicProperty('class_pvp:gamemode', gamemode)
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 }
 
@@ -159,7 +146,7 @@ export function endVote(): void {
  * Starts the game found in the class_pvp:gamemode dynamic property
  */
 export function startGame(): void {
-    const modeName = proptertyToName(world.getDynamicProperty('class_pvp:gamemode') as string)
+    const modeName = world.getDynamicProperty('class_pvp:gamemode') as string
     const gamemode = gamemodes[modeName] as Gamemode
 
     gamemode.startRound()

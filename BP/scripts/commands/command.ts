@@ -1,7 +1,5 @@
 import { ChatSendBeforeEvent, system } from '@minecraft/server'
-import { commands } from '../main'
-
-export const prefix = '!'
+import { getCommand } from './index'
 
 export default abstract class Command {
     public name: string
@@ -38,7 +36,7 @@ export default abstract class Command {
     public static commandEvent(event: ChatSendBeforeEvent) {
         const sender = event.sender
         const message = event.message
-        const command = Command.getCommand(message)
+        const command = getCommand(message)
         if (!command) return
         event.cancel = true
         if (command.requiresOp && !sender.isOp()) return
@@ -51,18 +49,6 @@ export default abstract class Command {
             } else
                 command.run(event)
         })
-    }
-
-    public static getCommand(commandString: string): Command {
-        if (!commandString.startsWith(prefix)) return undefined
-        const spaceIdx = commandString.indexOf(' ')
-        let name: string
-        if (spaceIdx < 0)
-            name = commandString.substring(1)
-        else
-            name = commandString.substring(1, spaceIdx)
-
-        return commands[name] as Command
     }
 
     public abstract run(event: ChatSendBeforeEvent, args?: (string | number)[]): void

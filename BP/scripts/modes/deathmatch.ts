@@ -2,7 +2,7 @@ import { world, DisplaySlotId, ObjectiveSortOrder, ScoreboardIdentityType, Playe
 import Gamemode from './gamemode'
 import * as Events from '../mechanics/events'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
-import { shuffle } from '../utils/helper'
+import { shuffle, stringNames } from '../utils/helper'
 import { getTeams, getTeamColor } from '../utils/teams'
 
 export default class Deathmatch extends Gamemode {
@@ -51,27 +51,24 @@ export default class Deathmatch extends Gamemode {
             .filter(p => p.type === ScoreboardIdentityType.Player)
             .forEach(p => players.push(p.getEntity() as Player))
 
-        let highestNames: string = ''
+        let highestNames: string[] = []
         let highestScore = 1
         for (const player of players) {
             const name = player.name
             const score = objective.getScore(player)
             if (score > highestScore) {
                 highestScore = score
-                highestNames = name + ', '
+                highestNames = [name]
             } else if (score === highestScore)
-                highestNames += name + ', '
+                highestNames.push(name)
         }
-        if (highestNames !== '')
-            highestNames = highestNames.substring(0, highestNames.length - 2)
-
         const overworld = world.getDimension('overworld')
 
-        if (highestNames.length <= 1)
+        if (highestNames.length < 1)
             overworld.runCommandAsync(`title @a title Nobody wins`)
         else if (highestNames.length === 1)
             overworld.runCommandAsync(`title @a title ${highestNames[0]} wins`)
         else
-            overworld.runCommandAsync(`title @a title ${highestNames} win`)
+            overworld.runCommandAsync(`title @a title ${stringNames(highestNames)} win`)
     }
 }
