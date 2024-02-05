@@ -1,0 +1,137 @@
+{
+    "format_version": "1.20.50",
+    "minecraft:entity": {
+        "description": {
+            "identifier": "class_pvp:thrown_dagger",
+            "runtime_identifier": "minecraft:arrow",
+            "is_spawnable": false,
+            "is_summonable": true
+        },
+        "component_groups": {
+            "class_pvp:poison_dagger": {
+                "minecraft:projectile": {
+                    "gravity": 0.01,
+                    "power": 2,
+                    "anchor": 1,
+                    "offset": [ 0, -0.65, -0.15 ],
+                    "hit_ground_sound": "bow.hit",
+                    "on_hit": {
+                        "impact_damage": {
+                            "damage": 1,
+                            "knockback": false,
+                            "destroy_on_hit": false
+                        },
+                        "spawn_aoe_cloud": {
+                            "affect_owner": false,
+                            "potion": 27,
+                            "duration": 1,
+                            "radius": 3,
+                            "reapplication_delay": 100,
+                            "radius_on_use": -0.5
+                        },
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "class_pvp:on_land",
+                                "target": "self"
+                            }
+                        },
+                        "remove_on_hit": {}
+                    },
+                    "uncertainty_base": 0,
+                    "uncertainty_multiplier": 0
+                },
+                "minecraft:variant": {
+                    "value": 0
+                }
+            },
+            "class_pvp:slowness_dagger": {
+                "minecraft:projectile": {
+                    "gravity": 0.01,
+                    "power": 1.5,
+                    "anchor": 1,
+                    "offset": [ 0, -0.65, -0.15 ],
+                    "hit_ground_sound": "bow.hit",
+                    "on_hit": {
+                        "impact_damage": {
+                            "damage": 1,
+                            "knockback": false,
+                            "destroy_on_hit": false,
+                        },
+                        "spawn_aoe_cloud": {
+                            "affect_owner": false,
+                            "potion": 42,
+                            "duration": 1,
+                            "radius": 3,
+                            "reapplication_delay": 100,
+                            "radius_on_use": -0.5
+                        },
+                        "definition_event": {
+                            "event_trigger": {
+                                "event": "class_pvp:on_land",
+                                "target": "self"
+                            }
+                        },
+                        "remove_on_hit": {}
+                    },
+                    "uncertainty_base": 0,
+                    "uncertainty_multiplier": 0
+                },
+                "minecraft:variant": {
+                    "value": 1
+                }
+            }
+        },
+        "components": {
+            "minecraft:projectile": {
+                "gravity": 0.01,
+                "power": 1.5,
+                "anchor": 1,
+                "offset": [ 0, -0.65, -0.15 ],
+                "on_hit": {
+                    "impact_damage": {
+                        "damage": 1,
+                        "knockback": false,
+                        "destroy_on_hit": true
+                    },
+                    "remove_on_hit": {}
+                },
+                "uncertainty_base": 1,
+                "uncertainty_multiplier": 0
+            },
+            "minecraft:physics": {},
+            "minecraft:collision_box": {
+                "height": 0.25,
+                "width": 0.25
+            }
+        },
+        "events": {
+            "minecraft:entity_spawned": {
+                "sequence": [
+                    {
+                        "add": {
+                            "component_groups": ["class_pvp:poison_dagger"]
+                        },
+                        "filters": {
+                            "test": "has_equipment",
+                            "domain": "hand",
+                            "subject": "other",
+                            "value": "class_pvp:poison_throwing_dagger"
+                        }
+                    },
+                    {
+                        "add": {
+                            "component_groups": ["class_pvp:slowness_dagger"]
+                        },
+                        "filters": {
+                            "test": "has_equipment",
+                            "domain": "hand",
+                            "subject": "other",
+                            "value": "class_pvp:slowness_throwing_dagger"
+                        }
+                    }
+                ]
+            },
+            "class_pvp:on_land": {} // This event is given functionality through scripting
+        }
+    }
+}

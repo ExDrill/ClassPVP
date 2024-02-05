@@ -1,4 +1,26 @@
 {
-	"format_version": "1.14.0",
-	"sound_definitions": {}
+	"format_version": "1.20.50",
+	"sound_definitions": {
+		"item.throwing_dagger.hit_poison": {
+			"category": "player",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/item/throwing_dagger/hit_poison"
+			]
+		},
+		"item.throwing_dagger.hit_slowness": {
+			"category": "player",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/item/throwing_dagger/hit_slowness"
+			]
+		},
+		"random.fed": {
+			"category": "player",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/fed"
+			]
+		}
+	}
 }

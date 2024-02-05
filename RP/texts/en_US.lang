@@ -6,3 +6,8 @@ item.class_pvp:warrior_boots=Warrior Boots
 
 ## Archer Class
 item.class_pvp:archer_helmet=Archer Helmet
+item.class_pvp:archer_chestplate=Archer Chestplate
+item.class_pvp:archer_leggings=Archer Leggings
+item.class_pvp:archer_boots=Archer Boots
+
+item.class_pvp:throwing_dagger=Throwing Dagger

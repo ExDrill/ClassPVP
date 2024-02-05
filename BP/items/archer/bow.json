@@ -5,7 +5,7 @@
             "identifier": "minecraft:bow"
         },
         "components": {
-            "minecraft:max_damage": 1,
+            "minecraft:max_stack_size": 1,
             "minecraft:use_duration": 3600
         }
     }

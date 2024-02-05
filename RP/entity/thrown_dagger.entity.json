@@ -1,0 +1,31 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "class_pvp:thrown_dagger",
+			"materials": {
+				"default": "entity_alphatest"
+			},
+			"textures": {
+				"poison": "textures/items/poison_throwing_dagger",
+				"slowness": "textures/items/slowness_throwing_dagger"
+			},
+			"geometry": {
+				"poison": "geometry.thrown_dagger_poison",
+				"slowness": "geometry.thrown_dagger_slowness"
+			},
+			"animations": {
+				"setup": "animation.thrown_item.setup"
+			},
+			"scripts": {
+				"should_update_bones_and_effects_offscreen": true,
+				"animate": [
+					"setup"
+				]
+			},
+			"render_controllers": [
+				"controller.render.thrown_dagger"
+			]
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+    "format_version": "1.20.50",
+    "minecraft:item": {
+        "description": {
+            "identifier": "class_pvp:poison_throwing_dagger"
+        },
+        "components": {
+            "minecraft:icon": "poison_throwing_dagger",
+            "minecraft:display_name": {
+                "value": "item.class_pvp:throwing_dagger"
+            },
+            "minecraft:throwable": {
+                "do_swing_animation": true
+            },
+            "minecraft:projectile": {
+                "projectile_entity": "class_pvp:thrown_dagger"
+            },
+            "minecraft:cooldown": {
+                "category": "throwing_dagger",
+                "duration": 1
+            }
+        }
+    }
+}
