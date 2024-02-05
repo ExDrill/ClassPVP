@@ -48,7 +48,7 @@
 					"scale": 1.0
 				},
 				"archer": {
-					"max_health": 15,
+					"max_health": 20,
 					"movement_speed": 0.12,
 					"scale": 1.0
 				}

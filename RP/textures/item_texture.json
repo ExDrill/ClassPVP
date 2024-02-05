@@ -1,5 +1,12 @@
 {
 	"resource_pack_name": "Class PVP",
 	"texture_name": "atlas.items",
-	"texture_data": {}
+	"texture_data": {
+		"poison_throwing_dagger": {
+			"textures": "textures/items/poison_throwing_dagger"
+		},
+		"slowness_throwing_dagger": {
+			"textures": "textures/items/slowness_throwing_dagger"
+		}
+	}
 }

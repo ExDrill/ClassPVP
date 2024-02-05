@@ -1,0 +1,53 @@
+{
+	"format_version": "1.16.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.thrown_dagger_poison",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 1,
+				"visible_bounds_height": 1,
+				"visible_bounds_offset": [0, 0, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 8, 0],
+					"texture_meshes": [
+						{
+							"texture": "poison",
+							"position": [0, -8, 0],
+							"rotation": [0, 45, -90],
+							"local_pivot": [20, 0.5, 19]
+						}
+					]
+				}
+			]
+		},
+		{
+			"description": {
+				"identifier": "geometry.thrown_dagger_slowness",
+				"texture_width": 16,
+				"texture_height": 16,
+				"visible_bounds_width": 1,
+				"visible_bounds_height": 1,
+				"visible_bounds_offset": [0, 0, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 8, 0],
+					"texture_meshes": [
+						{
+							"texture": "slowness",
+							"position": [0, -8, 0],
+							"rotation": [0, 45, -90],
+							"local_pivot": [20, 0.5, 19]
+						}
+					]
+				}
+			]
+		}
+	]
+}
