@@ -1,4 +1,3 @@
-import { world } from '@minecraft/server'
 import { setCountdownLength, setCountdown } from '../mechanics/lobby'
 import Command from './command'
 
