@@ -7,6 +7,10 @@ export default abstract class PlayerClass {
         this.id = id
     }
 
+    public abstract createEvents(): void
+
+    public abstract destroyEvents(): void
+
     public abstract equip(player: Player): void
 
     public getID(): string {

@@ -4,12 +4,13 @@ import TeamDeathmatch from './modes/teamDeathmatch'
 import * as Lobby from './mechanics/lobby'
 
 import PlayerClass from './playerClasses/playerClass'
+import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
 import EquipCommand from './commands/equip'
 import EndCommand from './commands/end'
-import SetCountdownCommand from './commands/set_countdown'
+import SetCountdownCommand from './commands/setCountdown'
 import StartCommand from './commands/start'
 
 /**
@@ -20,9 +21,10 @@ export const gamemodes = {
     'Team Deathmatch': new TeamDeathmatch()
 }
 
-export const playerClasses: PlayerClass[] = [
-    new ArcherClass()
-]
+export const playerClasses: Map<string, PlayerClass> = new Map([
+    ['warrior', new WarriorClass()],
+    ['archer', new ArcherClass()]
+])
 
 export const commands: Command[] = [
     new EquipCommand(),
