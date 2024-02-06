@@ -16,7 +16,9 @@ export function getCountdownLength(): number {
  * @param {number} ticks Set countdown length in ticks
  */
 export function setCountdownLength(ticks: number): void {
-    if (ticks < 100)
+    if (ticks < 0)
+        ticks = -1
+    else if (ticks < 100)
         ticks = 100
 
     world.setDynamicProperty('class_pvp:intermission_length', ticks)
@@ -49,7 +51,7 @@ export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
         const player = world.getPlayers({ name: event.playerName })[0]
         if (!player) return
         system.clearRun(interval)
-        player.setProperty('class_pvp:vote', 'none')
+        player.setDynamicProperty('class_pvp:vote', 'none')
     }, 1)
 }
 
@@ -60,7 +62,8 @@ export function endGame(): void {
         gamemode.endRound()
     }
 
-    startIntermission()
+    if (getCountdownLength() >= 0)
+        startIntermission()
 }
 
 /**
@@ -76,7 +79,7 @@ export function getPlayerVote(player: Player): string {
  */
 export function startIntermission(): void {
     for (const player of world.getAllPlayers())
-        player.setProperty('class_pvp:vote', 'none')
+        player.setDynamicProperty('class_pvp:vote', 'none')
 
     setCountdown(getCountdownLength())
     intermissionInterval = system.runInterval(() => intermissionTick(), 1)
@@ -136,6 +139,7 @@ export function endVote(): void {
     if (!gamemode || gamemode === 'none') {
         const random = Math.floor(Math.random() * modeKeys.length);
         gamemode = modeKeys[random]
+        console.warn(`${random}: ${gamemode}`)
     }
 
     world.setDynamicProperty('class_pvp:gamemode', gamemode)
@@ -155,8 +159,9 @@ export function startGame(): void {
 /**
  * Stops the intermission countdown
  */
-function stopCountdown(): void {
-    system.clearRun(intermissionInterval)
+export function stopCountdown(): void {
+    if (intermissionInterval)
+        system.clearRun(intermissionInterval)
     setCountdown(0)
     intermissionInterval = undefined
 }

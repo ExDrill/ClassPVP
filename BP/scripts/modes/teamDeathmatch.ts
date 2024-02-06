@@ -58,16 +58,18 @@ export default class TeamDeathmatch extends Gamemode {
         const objective = world.scoreboard.getObjective('class_pvp:eliminations')
         if (!objective) return
 
-        const teamOne = objective.getParticipants()[0].displayName
-        const teamTwo = objective.getParticipants()[1].displayName
+        const teamOne = objective.getParticipants()[0]
+        const teamTwo = objective.getParticipants()[1]
+
+        if (!teamOne || !teamTwo) return
 
         const oneScore = objective.getScore(teamOne)
         const twoScore = objective.getScore(teamTwo)
         const overworld = world.getDimension('overworld')
         if (oneScore > twoScore)
-            overworld.runCommandAsync(`title @a title ${teamOne} wins§r`)
+            overworld.runCommandAsync(`title @a title ${teamOne.displayName} wins§r`)
         else if (twoScore > oneScore)
-            overworld.runCommandAsync(`title @a title ${teamTwo} wins§r`)
+            overworld.runCommandAsync(`title @a title ${teamTwo.displayName} wins§r`)
         else
             overworld.runCommandAsync(`title @a title tie`)
     }

@@ -1,22 +1,28 @@
 import { ChatSendBeforeEvent, system } from '@minecraft/server'
-import { getCommand } from './index'
+import { commands } from '../main'
+import { parseBoolean } from '../utils/helper'
+
+export const prefix = '!'
+
+export type ArgType = string | number | boolean
+type StringTypes = 'string' | 'number' | 'boolean'
 
 export default abstract class Command {
     public name: string
     public requiresOp: boolean
-    public argTypes: ('string' | 'number')[]
+    public argTypes: StringTypes[]
 
-    protected constructor(name: string, requiresOp: boolean, argTypes?: ('string' | 'number')[]) {
+    protected constructor(name: string, requiresOp: boolean, argTypes?: StringTypes[]) {
         this.name = name
         this.requiresOp = requiresOp
         this.argTypes = argTypes
     }
 
-    protected getArgs(argString: string): (string | number)[] {
+    protected getArgs(argString: string): ArgType[] {
         if (!this.argTypes) return undefined
 
         const splitArgs = argString.split(' ')
-        const args: (string | number)[] = []
+        const args: ArgType[] = []
 
         for (let i = 0; i < this.argTypes.length; i++) {
             const type = this.argTypes[i]
@@ -26,6 +32,8 @@ export default abstract class Command {
                 args.push(arg)
             else if (type === 'number')
                 args.push(Number.parseInt(arg))
+            else if (type === 'boolean')
+                args.push(parseBoolean(arg))
             else
                 throw new TypeError('Invalid type')
         }
@@ -36,7 +44,7 @@ export default abstract class Command {
     public static commandEvent(event: ChatSendBeforeEvent) {
         const sender = event.sender
         const message = event.message
-        const command = getCommand(message)
+        const command = Command.getCommand(message)
         if (!command) return
         event.cancel = true
         if (command.requiresOp && !sender.isOp()) return
@@ -51,5 +59,17 @@ export default abstract class Command {
         })
     }
 
-    public abstract run(event: ChatSendBeforeEvent, args?: (string | number)[]): void
+    public static getCommand(commandString: string): Command {
+        if (!commandString.startsWith(prefix)) return undefined
+        const spaceIdx = commandString.indexOf(' ')
+        let name: string
+        if (spaceIdx < 0)
+            name = commandString.substring(1)
+        else
+            name = commandString.substring(1, spaceIdx)
+
+        return commands.find(command => command.name === name)
+    }
+
+    public abstract run(event: ChatSendBeforeEvent, args?: ArgType[]): void
 }

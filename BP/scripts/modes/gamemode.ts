@@ -2,6 +2,7 @@ import { world, system } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
 import { endGame } from '../mechanics/lobby'
 import * as Events from '../mechanics/events'
+import * as Bossbar from '../utils/bossbar_helper'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
@@ -19,6 +20,8 @@ export default abstract class Gamemode {
         this.addObjectives()
         this.assignTeams()
         Gamemode.setRoundTime(this.roundDurationTicks)
+        Bossbar.createBossbarEntity()
+
     }
 
     public endRound(): void {
@@ -32,6 +35,7 @@ export default abstract class Gamemode {
         world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
         this.disableEvents()
         removeObjectives()
+        Bossbar.getBossbarEntity()?.remove()
     }
 
     /**

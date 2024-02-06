@@ -4,7 +4,7 @@
         "description": {
             "identifier": "class_pvp:round_timer",
             "is_spawnable": false,
-            "is_summonable": false,
+            "is_summonable": true,
             "is_experimental": false
         },
         "components": {
@@ -14,7 +14,7 @@
             },
             "minecraft:boss": {
                 "hud_range": 1000,
-                "name": "Round Time",
+                "name": "entity.class_pvp:round_timer.name",
                 "should_darken_sky": false
             }
         }

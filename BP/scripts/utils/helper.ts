@@ -48,6 +48,11 @@ export function stringNames(names: string[]): string {
     return str
 }
 
+export function parseBoolean(str: string): boolean {
+    if (str === 'true') return true
+    return false
+}
+
 // export function shuffle<T>(array: T[]): T[] {
 //     let newArray = array
 //     for (var i = newArray.length - 1; i > 0; i--) {

@@ -1,8 +1,9 @@
-import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, system, ChatSendBeforeEvent } from '@minecraft/server'
+import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent } from '@minecraft/server'
 import { setScore, addScore } from '../utils/scoreboard'
 import { gamemodes } from '../main'
 import Gamemode from '../modes/gamemode'
 import { getTeamColor, teams } from '../utils/teams'
+import Command from '../commands/command'
 
 export function healthOnKill(event: EntityDieAfterEvent): void {
     const damageSource = event.damageSource
@@ -51,16 +52,17 @@ export function signVote(event: PlayerInteractWithBlockAfterEvent): void {
     const gamemode: Gamemode = gamemodes[text]
     if (!gamemode) return
 
-    player.setProperty('class_pvp:vote', text)
+    player.setDynamicProperty('class_pvp:vote', text)
 }
 
 export function chatColor(event: ChatSendBeforeEvent): void {
-    event.cancel = true
-
     const player = event.sender
     const name = player.name
     const color = getTeamColor(player)
     const message = event.message
+
+    if (Command.getCommand(message)) return
+    event.cancel = true
 
     world.sendMessage(`${color}<${name}>§r ${message}`)
 }

@@ -11,3 +11,5 @@ item.class_pvp:archer_leggings=Archer Leggings
 item.class_pvp:archer_boots=Archer Boots
 
 item.class_pvp:throwing_dagger=Throwing Dagger
+
+entity.class_pvp:round_timer.name=Round Timer
