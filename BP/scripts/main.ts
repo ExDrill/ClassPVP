@@ -8,10 +8,10 @@ import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
-import EndCommand from './commands/end'
-import StartCommand from './commands/start'
-import SetCountdownCommand from './commands/setCountdown'
 import EquipCommand from './commands/equip'
+import EndCommand from './commands/end'
+import SetCountdownCommand from './commands/setCountdown'
+import StartCommand from './commands/start'
 
 /**
  * Registry for gamemodes 
@@ -21,23 +21,17 @@ export const gamemodes = {
     'Team Deathmatch': new TeamDeathmatch()
 }
 
-export const propertyGamemodes = {
-    'none': 'none',
-    'Deathmatch': 'deathmatch',
-    'Team Deathmatch': 'team_deathmatch'
-}
-
-export const commands = {
-    end: new EndCommand(),
-    start: new StartCommand(),
-    countdown: new SetCountdownCommand(),
-    equip: new EquipCommand()
-}
-
 export const playerClasses: Map<string, PlayerClass> = new Map([
     ['warrior', new WarriorClass()],
     ['archer', new ArcherClass()]
 ])
+
+export const commands: Command[] = [
+    new EquipCommand(),
+    new EndCommand(),
+    new SetCountdownCommand(),
+    new StartCommand()
+]
 
 world.afterEvents.worldInitialize.subscribe(Lobby.initEndRound)
 world.afterEvents.playerJoin.subscribe(Lobby.removeVoteOnJoin)

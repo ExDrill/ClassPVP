@@ -36,6 +36,23 @@ export function keyOf<T>(find: T, obj: {}): string {
     return undefined
 }
 
+/**
+ * @returns names put in \<name\>, \<name\>, and \<name\> format
+ */
+export function stringNames(names: string[]): string {
+    let str = ''
+    for (let i = 0; i < names.length - 2; i++)
+        str += names[i] + ',\n'
+
+    str += `${names[names.length - 2]},\n and ${names[names.length - 1]}`
+    return str
+}
+
+export function parseBoolean(str: string): boolean {
+    if (str === 'true') return true
+    return false
+}
+
 // export function shuffle<T>(array: T[]): T[] {
 //     let newArray = array
 //     for (var i = newArray.length - 1; i > 0; i--) {

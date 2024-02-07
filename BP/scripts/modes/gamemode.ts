@@ -2,6 +2,7 @@ import { world, system } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
 import { endGame } from '../mechanics/lobby'
 import * as Events from '../mechanics/events'
+import * as Bossbar from '../utils/bossbar_helper'
 import { playerClasses } from '../main'
 
 export default abstract class Gamemode {
@@ -23,6 +24,8 @@ export default abstract class Gamemode {
         this.addObjectives()
         this.assignTeams()
         Gamemode.setRoundTime(this.roundDurationTicks)
+        Bossbar.createBossbarEntity()
+
     }
 
     public endRound(): void {
@@ -39,6 +42,7 @@ export default abstract class Gamemode {
             playerClass.destroyEvents()
         }
         removeObjectives()
+        Bossbar.getBossbarEntity()?.remove()
     }
 
     /**

@@ -1,8 +1,7 @@
 import { system, world, Player, WorldInitializeAfterEvent, PlayerJoinAfterEvent } from '@minecraft/server'
 import * as Events from './events'
-import { propertyGamemodes, gamemodes } from '../main'
+import { gamemodes } from '../main'
 import Gamemode from '../modes/gamemode'
-import { keyOf } from '../utils/helper'
 
 let intermissionInterval: number
 
@@ -17,7 +16,9 @@ export function getCountdownLength(): number {
  * @param {number} ticks Set countdown length in ticks
  */
 export function setCountdownLength(ticks: number): void {
-    if (ticks < 100)
+    if (ticks < 0)
+        ticks = -1
+    else if (ticks < 100)
         ticks = 100
 
     world.setDynamicProperty('class_pvp:intermission_length', ticks)
@@ -50,38 +51,27 @@ export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
         const player = world.getPlayers({ name: event.playerName })[0]
         if (!player) return
         system.clearRun(interval)
-        player.setProperty('class_pvp:vote', 'none')
+        player.setDynamicProperty('class_pvp:vote', 'none')
     }, 1)
 }
 
 export function endGame(): void {
-    const property = world.getDynamicProperty('class_pvp:gamemode') as string
-    if (property && property !== 'none') {
-        const gameName = proptertyToName(property)
+    const gameName = world.getDynamicProperty('class_pvp:gamemode') as string
+    if (gameName && gameName !== 'none') {
         const gamemode = gamemodes[gameName] as Gamemode
         gamemode.endRound()
     }
 
-    startIntermission()
+    if (getCountdownLength() >= 0)
+        startIntermission()
 }
 
 /**
- * Converts the vote property string to a mode's name
- * @param {string} vote The vote property
- */
-export function proptertyToName(vote: string): string {
-    return keyOf(vote, propertyGamemodes)
-}
-
-/**
- * Converts the player's vote property to a mode's name
+ * Gets the player's vote
  * @param {Player} player The player
  */
-export function playerPropertyToName(player: Player): string {
-    const vote = player.getProperty('class_pvp:vote') as string
-    if (vote === 'none') return undefined
-
-    return proptertyToName(vote)
+export function getPlayerVote(player: Player): string {
+    return player.getDynamicProperty('class_pvp:vote') as string
 }
 
 /**
@@ -89,7 +79,7 @@ export function playerPropertyToName(player: Player): string {
  */
 export function startIntermission(): void {
     for (const player of world.getAllPlayers())
-        player.setProperty('class_pvp:vote', 'none')
+        player.setDynamicProperty('class_pvp:vote', 'none')
 
     setCountdown(getCountdownLength())
     intermissionInterval = system.runInterval(() => intermissionTick(), 1)
@@ -127,7 +117,7 @@ export function endVote(): void {
         voteMap.set(key, 0)
 
     for (const player of world.getAllPlayers()) {
-        let gamemode: string = playerPropertyToName(player);
+        let gamemode: string = getPlayerVote(player);
         if (!gamemode) continue
 
         const lastValue = voteMap.get(gamemode)
@@ -149,9 +139,10 @@ export function endVote(): void {
     if (!gamemode || gamemode === 'none') {
         const random = Math.floor(Math.random() * modeKeys.length);
         gamemode = modeKeys[random]
+        console.warn(`${random}: ${gamemode}`)
     }
 
-    world.setDynamicProperty('class_pvp:gamemode', propertyGamemodes[gamemode])
+    world.setDynamicProperty('class_pvp:gamemode', gamemode)
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 }
 
@@ -159,7 +150,7 @@ export function endVote(): void {
  * Starts the game found in the class_pvp:gamemode dynamic property
  */
 export function startGame(): void {
-    const modeName = proptertyToName(world.getDynamicProperty('class_pvp:gamemode') as string)
+    const modeName = world.getDynamicProperty('class_pvp:gamemode') as string
     const gamemode = gamemodes[modeName] as Gamemode
 
     gamemode.startRound()
@@ -168,8 +159,9 @@ export function startGame(): void {
 /**
  * Stops the intermission countdown
  */
-function stopCountdown(): void {
-    system.clearRun(intermissionInterval)
+export function stopCountdown(): void {
+    if (intermissionInterval)
+        system.clearRun(intermissionInterval)
     setCountdown(0)
     intermissionInterval = undefined
 }
