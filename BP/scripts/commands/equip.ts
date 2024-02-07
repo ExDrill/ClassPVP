@@ -1,5 +1,5 @@
 import { ChatSendBeforeEvent } from '@minecraft/server'
-import Command from './command'
+import Command, { ArgType } from './command'
 import { playerClasses } from '../main'
 
 export default class EquipCommand extends Command {
@@ -7,7 +7,7 @@ export default class EquipCommand extends Command {
         super('equip', true, ['string'])
     }
 
-    public run(event: ChatSendBeforeEvent, args?: (string|number)[]): void {
+    public run(event: ChatSendBeforeEvent, args?: ArgType[]): void {
         const player = event.sender
         const chosenClass = args[0] as string
         const playerClass = playerClasses.get(chosenClass)
