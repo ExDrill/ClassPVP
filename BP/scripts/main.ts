@@ -1,38 +1,42 @@
 import { world } from '@minecraft/server'
+
+import Gamemode from './modes/gamemode'
 import Deathmatch from './modes/deathmatch'
 import TeamDeathmatch from './modes/teamDeathmatch'
-import * as Lobby from './mechanics/lobby'
+import * as LobbyEvents from './events/lobbyEvents'
 
 import PlayerClass from './playerClasses/playerClass'
 import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
-import EquipCommand from './commands/equip'
 import EndCommand from './commands/end'
+import EquipCommand from './commands/equip'
+import EventCommand from './commands/event'
 import SetCountdownCommand from './commands/setCountdown'
 import StartCommand from './commands/start'
 
-/**
- * Registry for gamemodes 
- */
-export const gamemodes = {
-    'Deathmatch': new Deathmatch(),
-    'Team Deathmatch': new TeamDeathmatch()
-}
+// Gamemode registry
+export const GAMEMODES: Map<string, Gamemode> = new Map<string, Gamemode>([
+    ['deathmatch', new Deathmatch()],
+    ['team_deathmatch', new TeamDeathmatch()]
+])
 
-export const playerClasses: Map<string, PlayerClass> = new Map([
+// Player class registry
+export const PLAYER_CLASSES: Map<string, PlayerClass> = new Map([
     ['warrior', new WarriorClass()],
     ['archer', new ArcherClass()]
 ])
 
-export const commands: Command[] = [
-    new EquipCommand(),
+// Commands registry
+export const COMMANDS: Command[] = [
     new EndCommand(),
+    new EquipCommand(),
+    new EventCommand(),
     new SetCountdownCommand(),
     new StartCommand()
 ]
 
-world.afterEvents.worldInitialize.subscribe(Lobby.initEndRound)
-world.afterEvents.playerJoin.subscribe(Lobby.removeVoteOnJoin)
+world.afterEvents.worldInitialize.subscribe(LobbyEvents.initEndRound)
+world.afterEvents.playerJoin.subscribe(LobbyEvents.removeVoteOnJoin)
 world.beforeEvents.chatSend.subscribe(Command.commandEvent)

@@ -21,10 +21,7 @@ export default defineComponent((context) => {
     context.template(({ slot, protection }, { create }) => {
         create(
             {
-                'minecraft:icon': {
-                    'texture': slot,
-                    'frame': 0
-                },
+                'minecraft:icon': slot,
                 'minecraft:wearable': {
                     'slot': wearableSlots.get(slot),
                     'protection': protection

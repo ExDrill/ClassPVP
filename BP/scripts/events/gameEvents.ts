@@ -1,8 +1,8 @@
 import { world, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent } from '@minecraft/server'
 import { setScore, addScore } from '../utils/scoreboard'
-import { gamemodes } from '../main'
+import { GAMEMODES } from '../main'
 import Gamemode from '../modes/gamemode'
-import { getTeamColor, teams } from '../utils/teams'
+import { getTeamColor, TEAMS } from '../utils/teams'
 import Command from '../commands/command'
 
 export function healthOnKill(event: EntityDieAfterEvent): void {
@@ -31,7 +31,7 @@ export function rewardTeamScore(event: EntityDieAfterEvent): void {
     const team = killer.getProperty('class_pvp:team') as string
     if (team === 'none') return
 
-    addScore('class_pvp:eliminations', teams[team] + team, 1)
+    addScore('class_pvp:eliminations', TEAMS[team] + team, 1)
 }
 
 export function healthDisplay(event: EntityHealthChangedAfterEvent): void {
@@ -49,9 +49,8 @@ export function signVote(event: PlayerInteractWithBlockAfterEvent): void {
     if (!sign || !sign.isWaxed) return
 
     const text = sign.getText()
-    const gamemode: Gamemode = gamemodes[text]
-    if (!gamemode) return
-
+    
+    if (!GAMEMODES.has(text)) return
     player.setDynamicProperty('class_pvp:vote', text)
 }
 

@@ -1,5 +1,5 @@
 {
-    "format_version": "1.20.50",
+    "format_version": "1.20.60",
     "minecraft:item": {
         "description": {
             "identifier": "class_pvp:slowness_throwing_dagger"
@@ -17,7 +17,7 @@
             },
             "minecraft:cooldown": {
                 "category": "throwing_dagger",
-                "duration": 1
+                "duration": 0.5
             }
         }
     }

@@ -1,18 +1,23 @@
-import { world, system, Player, EquipmentSlot, ItemStack, ItemUseAfterEvent } from '@minecraft/server'
+import { world, Player, EquipmentSlot, ItemStack } from '@minecraft/server'
+import * as Events from '../events/archerEvents'
 import PlayerClass from './playerClass'
 
 export default class ArcherClass extends PlayerClass {
-
+    
     public constructor() {
         super('archer')
     }
 
-    public createEvents(): void {
-        world.afterEvents.itemUse.subscribe(ArcherClass.reloadDaggers)
+    public enableEvents(): void {
+        world.afterEvents.itemUse.subscribe(Events.reloadDaggers)
+        world.afterEvents.projectileHitEntity.subscribe(Events.hitEntityEffects)
+        world.afterEvents.projectileHitBlock.subscribe(Events.hitBlockEffects)
     }
 
-    public destroyEvents(): void {
-        world.afterEvents.itemUse.unsubscribe(ArcherClass.reloadDaggers)
+    public disableEvents(): void {
+        world.afterEvents.itemUse.unsubscribe(Events.reloadDaggers)
+        world.afterEvents.projectileHitEntity.unsubscribe(Events.hitEntityEffects)
+        world.afterEvents.projectileHitBlock.unsubscribe(Events.hitBlockEffects)
     }
 
     public equip(player: Player) {
@@ -31,7 +36,7 @@ export default class ArcherClass extends PlayerClass {
         }
     }
 
-    private static createThrowingDagger(variant: string, amount: number): ItemStack {
+    public static createThrowingDagger(variant: string, amount: number): ItemStack {
         const stack = PlayerClass.createItemStack(`class_pvp:${variant}_throwing_dagger`)
         const firstLetter = variant.charAt(0)
         const lore = firstLetter.toUpperCase() + variant.replace(firstLetter, '')
@@ -39,26 +44,6 @@ export default class ArcherClass extends PlayerClass {
         stack.setLore([lore])
         stack.amount = amount
         return stack
-    }
-
-    private static reloadDaggers(event: ItemUseAfterEvent): void {
-        const user = event.source
-        const inventory = user.getComponent('minecraft:inventory')
-        const container = inventory.container
-        const stack = event.itemStack
-        
-        if (user.getItemCooldown('throwing_dagger') > 0) return
-        
-        if (stack.amount == 1) {
-            if (stack.typeId == 'class_pvp:slowness_throwing_dagger') {
-                const stack = ArcherClass.createThrowingDagger('slowness', 3)
-                system.runTimeout(() => container.setItem(1, stack), 50)
-            }
-            if (stack.typeId == 'class_pvp:poison_throwing_dagger') {
-                const stack = ArcherClass.createThrowingDagger('poison', 1)
-                system.runTimeout(() => container.setItem(2, stack), 100)
-            }
-        }
     }
 
     private static createArrows(): ItemStack {

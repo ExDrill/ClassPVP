@@ -1,6 +1,6 @@
 import { ChatSendBeforeEvent } from '@minecraft/server'
 import Command, { ArgType } from './command'
-import { playerClasses } from '../main'
+import { PLAYER_CLASSES } from '../main'
 
 export default class EquipCommand extends Command {
     public constructor() {
@@ -10,10 +10,10 @@ export default class EquipCommand extends Command {
     public run(event: ChatSendBeforeEvent, args?: ArgType[]): void {
         const player = event.sender
         const chosenClass = args[0] as string
-        const playerClass = playerClasses.get(chosenClass)
+        const playerClass = PLAYER_CLASSES.get(chosenClass)
 
+        player.runCommand('clear @s')
         if (chosenClass == 'none') {
-            player.runCommand('clear @s')
             player.setProperty('class_pvp:player_class', 'none')
             player.sendMessage('Cleared player class!')
         }

@@ -1,4 +1,4 @@
-import { setCountdownLength, setCountdown } from '../mechanics/lobby'
+import { setCountdownLength, setCountdown } from '../events/lobbyEvents'
 import Command from './command'
 
 export default class SetCountdownCommand extends Command {
