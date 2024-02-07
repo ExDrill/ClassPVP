@@ -16,6 +16,10 @@
                 "hud_range": 1000,
                 "name": "entity.class_pvp:round_timer.name",
                 "should_darken_sky": false
+            },
+            "minecraft:tick_world": {
+                "never_despawn": true,
+                "radius": 2
             }
         }
     }
