@@ -16,12 +16,16 @@ export function getCountdownLength(): number {
  * @param {number} ticks Set countdown length in ticks
  */
 export function setCountdownLength(ticks: number): void {
+    const lastTicks = getCountdownLength()
+
     if (ticks < 0)
         ticks = -1
     else if (ticks < 100)
         ticks = 100
 
     world.setDynamicProperty('class_pvp:intermission_length', ticks)
+    if (lastTicks < 0 && ticks > 0)
+        startCountdown()
 }
 
 /**
@@ -62,8 +66,7 @@ export function endGame(): void {
         gamemode.endRound()
     }
 
-    if (getCountdownLength() >= 0)
-        startIntermission()
+    startIntermission()
 }
 
 /**
@@ -81,9 +84,14 @@ export function startIntermission(): void {
     for (const player of world.getAllPlayers())
         player.setDynamicProperty('class_pvp:vote', 'none')
 
+    if (getCountdownLength() >= 0)
+        startCountdown()
+    world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
+}
+
+export function startCountdown() {
     setCountdown(getCountdownLength())
     intermissionInterval = system.runInterval(() => intermissionTick(), 1)
-    world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
 }
 
 /**
@@ -99,8 +107,11 @@ function intermissionTick(): void {
         player.dimension.runCommandAsync(`title @a actionbar Game starts in: ${Math.ceil(seconds)}`)
 
     if (countdown <= 0) {
-        endVote()
-        system.runTimeout(() => startGame(), 1)
+        stopCountdown()
+        if (countdown === 0) {
+            endVote()
+            system.runTimeout(() => startGame(), 1)
+        }
     }
 }
 
@@ -108,7 +119,6 @@ function intermissionTick(): void {
  * Ends the voting period and sets the gamemode to the winner.
  */
 export function endVote(): void {
-    stopCountdown()
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 
     const voteMap = new Map<string, number>()

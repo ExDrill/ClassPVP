@@ -2,7 +2,7 @@ import { world, system } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
 import { endGame } from '../mechanics/lobby'
 import * as Events from '../mechanics/events'
-import * as Bossbar from '../utils/bossbar_helper'
+import * as Bossbar from '../utils/bossbarHelper'
 import { playerClasses } from '../main'
 
 export default abstract class Gamemode {
