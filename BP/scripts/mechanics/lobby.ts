@@ -149,7 +149,6 @@ export function endVote(): void {
     if (!gamemode || gamemode === 'none') {
         const random = Math.floor(Math.random() * modeKeys.length);
         gamemode = modeKeys[random]
-        console.warn(`${random}: ${gamemode}`)
     }
 
     world.setDynamicProperty('class_pvp:gamemode', gamemode)

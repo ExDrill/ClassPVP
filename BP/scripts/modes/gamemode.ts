@@ -36,12 +36,12 @@ export default abstract class Gamemode {
             system.clearRun(this.ongoingInterval)
         this.ongoingInterval = undefined
         world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
+        Bossbar.clearBossbars()
         this.disableEvents()
         for (const playerClass of playerClasses.values()) {
             playerClass.destroyEvents()
         }
         removeObjectives()
-        Bossbar.getBossbarEntity()?.remove()
     }
 
     /**
@@ -74,6 +74,10 @@ export default abstract class Gamemode {
         }
         else {
             Gamemode.setRoundTime(roundTime - 1)
+            Bossbar.getBossbarEntities().forEach(entity => {
+                const healthComponent = entity.getComponent('health')
+                healthComponent.setCurrentValue((roundTime / this.roundDurationTicks) * healthComponent.effectiveMax)
+            })
         }
     }
 
