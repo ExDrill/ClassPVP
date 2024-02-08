@@ -3,83 +3,21 @@
     "minecraft:entity": {
         "description": {
             "identifier": "class_pvp:thrown_dagger",
+            "properties": {
+                "class_pvp:mob_effect": {
+                    "client_sync": false,
+                    "type": "enum",
+                    "default": "none",
+                    "values": [
+                        "none",
+                        "poison",
+                        "slowness"
+                    ]
+                }
+            },
             "runtime_identifier": "minecraft:arrow",
             "is_spawnable": false,
             "is_summonable": true
-        },
-        "component_groups": {
-            "class_pvp:poison_dagger": {
-                "minecraft:projectile": {
-                    "gravity": 0.01,
-                    "power": 2,
-                    "anchor": 1,
-                    "offset": [ 0, -0.65, -0.15 ],
-                    "hit_ground_sound": "bow.hit",
-                    "on_hit": {
-                        "impact_damage": {
-                            "damage": 1,
-                            "knockback": false,
-                            "destroy_on_hit": false
-                        },
-                        "spawn_aoe_cloud": {
-                            "affect_owner": false,
-                            "potion": 27,
-                            "duration": 1,
-                            "radius": 3,
-                            "reapplication_delay": 100,
-                            "radius_on_use": -0.5
-                        },
-                        "definition_event": {
-                            "event_trigger": {
-                                "event": "class_pvp:on_land",
-                                "target": "self"
-                            }
-                        },
-                        "remove_on_hit": {}
-                    },
-                    "uncertainty_base": 0,
-                    "uncertainty_multiplier": 0
-                },
-                "minecraft:variant": {
-                    "value": 0
-                }
-            },
-            "class_pvp:slowness_dagger": {
-                "minecraft:projectile": {
-                    "gravity": 0.01,
-                    "power": 1.5,
-                    "anchor": 1,
-                    "offset": [ 0, -0.65, -0.15 ],
-                    "hit_ground_sound": "bow.hit",
-                    "on_hit": {
-                        "impact_damage": {
-                            "damage": 1,
-                            "knockback": false,
-                            "destroy_on_hit": false,
-                        },
-                        "spawn_aoe_cloud": {
-                            "affect_owner": false,
-                            "potion": 42,
-                            "duration": 1,
-                            "radius": 3,
-                            "reapplication_delay": 100,
-                            "radius_on_use": -0.5
-                        },
-                        "definition_event": {
-                            "event_trigger": {
-                                "event": "class_pvp:on_land",
-                                "target": "self"
-                            }
-                        },
-                        "remove_on_hit": {}
-                    },
-                    "uncertainty_base": 0,
-                    "uncertainty_multiplier": 0
-                },
-                "minecraft:variant": {
-                    "value": 1
-                }
-            }
         },
         "components": {
             "minecraft:projectile": {
@@ -90,10 +28,8 @@
                 "on_hit": {
                     "impact_damage": {
                         "damage": 1,
-                        "knockback": false,
-                        "destroy_on_hit": true
-                    },
-                    "remove_on_hit": {}
+                        "knockback": false
+                    }
                 },
                 "uncertainty_base": 1,
                 "uncertainty_multiplier": 0
@@ -108,8 +44,8 @@
             "minecraft:entity_spawned": {
                 "sequence": [
                     {
-                        "add": {
-                            "component_groups": ["class_pvp:poison_dagger"]
+                        "set_property": {
+                            "class_pvp:mob_effect": "poison"
                         },
                         "filters": {
                             "test": "has_equipment",
@@ -119,8 +55,8 @@
                         }
                     },
                     {
-                        "add": {
-                            "component_groups": ["class_pvp:slowness_dagger"]
+                        "set_property": {
+                            "class_pvp:mob_effect": "slowness"
                         },
                         "filters": {
                             "test": "has_equipment",
@@ -130,8 +66,7 @@
                         }
                     }
                 ]
-            },
-            "class_pvp:on_land": {} // This event is given functionality through scripting
+            }
         }
     }
 }

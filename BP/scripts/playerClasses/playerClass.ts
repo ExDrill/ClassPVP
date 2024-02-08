@@ -7,9 +7,9 @@ export default abstract class PlayerClass {
         this.id = id
     }
 
-    public abstract createEvents(): void
+    public abstract enableEvents(): void
 
-    public abstract destroyEvents(): void
+    public abstract disableEvents(): void
 
     public abstract equip(player: Player): void
 

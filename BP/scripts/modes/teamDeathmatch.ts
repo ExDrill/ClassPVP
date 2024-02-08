@@ -1,9 +1,9 @@
 import { world, DisplaySlotId, ObjectiveSortOrder } from '@minecraft/server'
 import Gamemode from './gamemode'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
-import * as Events from '../mechanics/events'
+import * as Events from '../events/gameEvents'
 import { shuffle } from '../utils/helper'
-import { getTeams, getTeamColor, teams } from '../utils/teams'
+import { getTeams, getTeamColor, TEAMS } from '../utils/teams'
 
 export default class TeamDeathmatch extends Gamemode {
     public addObjectives() {
@@ -45,8 +45,8 @@ export default class TeamDeathmatch extends Gamemode {
             player.nameTag = `${getTeamColor(player)}${player.name}`
         }
 
-        setScore('class_pvp:eliminations', teams[teamOne] + teamOne, 0)
-        setScore('class_pvp:eliminations', teams[teamTwo] + teamTwo, 0)
+        setScore('class_pvp:eliminations', TEAMS[teamOne] + teamOne, 0)
+        setScore('class_pvp:eliminations', TEAMS[teamTwo] + teamTwo, 0)
     }
 
     public endRound() {

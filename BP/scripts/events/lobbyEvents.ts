@@ -1,6 +1,6 @@
 import { system, world, Player, WorldInitializeAfterEvent, PlayerJoinAfterEvent } from '@minecraft/server'
-import * as Events from './events'
-import { gamemodes } from '../main'
+import * as Events from './gameEvents'
+import { GAMEMODES } from '../main'
 import Gamemode from '../modes/gamemode'
 
 let intermissionInterval: number
@@ -60,12 +60,13 @@ export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
 }
 
 export function endGame(): void {
-    const gameName = world.getDynamicProperty('class_pvp:gamemode') as string
-    if (gameName && gameName !== 'none') {
-        const gamemode = gamemodes[gameName] as Gamemode
-        gamemode.endRound()
+    const gamemodeId = world.getDynamicProperty('class_pvp:gamemode') as string
+    if (gamemodeId && gamemodeId !== 'none') {
+        const gamemode = GAMEMODES.get(gamemodeId)
+        if (gamemode) {
+            gamemode.endRound()
+        }
     }
-
     startIntermission()
 }
 
@@ -122,7 +123,7 @@ export function endVote(): void {
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 
     const voteMap = new Map<string, number>()
-    const modeKeys = Object.keys(gamemodes)
+    const modeKeys = Object.keys(GAMEMODES)
     for (const key of modeKeys)
         voteMap.set(key, 0)
 
@@ -160,7 +161,7 @@ export function endVote(): void {
  */
 export function startGame(): void {
     const modeName = world.getDynamicProperty('class_pvp:gamemode') as string
-    const gamemode = gamemodes[modeName] as Gamemode
+    const gamemode = GAMEMODES[modeName] as Gamemode
 
     gamemode.startRound()
 }

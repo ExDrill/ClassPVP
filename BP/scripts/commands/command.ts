@@ -1,5 +1,5 @@
 import { ChatSendBeforeEvent, system } from '@minecraft/server'
-import { commands } from '../main'
+import { COMMANDS } from '../main'
 import { parseBoolean } from '../utils/helper'
 
 export const prefix = '!'
@@ -68,7 +68,7 @@ export default abstract class Command {
         else
             name = commandString.substring(1, spaceIdx)
 
-        return commands.find(command => command.name === name)
+        return COMMANDS.find(command => command.name === name)
     }
 
     public abstract run(event: ChatSendBeforeEvent, args?: ArgType[]): void
