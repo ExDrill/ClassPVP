@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"render_controllers": {
-		"controller.render.thrown_dagger": {
+		"controller.render.throwing_dagger": {
 			"arrays": {
 				"geometries": {
 					"array.models": [
@@ -16,14 +16,14 @@
 					]
 				}
 			},
-			"geometry": "array.models[query.variant]",
+			"geometry": "array.models[query.property('class_pvp:mob_effect') == 'poison' ? 0 : 1]",
 			"materials": [
 				{
 					"*": "Material.default"
 				}
 			],
 			"textures": [
-				"array.textures[query.variant]"
+				"array.textures[query.property('class_pvp:mob_effect') == 'poison' ? 0 : 1]"
 			]
 		}
 	}

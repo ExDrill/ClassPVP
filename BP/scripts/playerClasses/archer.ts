@@ -9,13 +9,11 @@ export default class ArcherClass extends PlayerClass {
     }
 
     public enableEvents(): void {
-        world.afterEvents.itemUse.subscribe(Events.reloadDaggers)
         world.afterEvents.projectileHitEntity.subscribe(Events.hitEntityEffects)
         world.afterEvents.projectileHitBlock.subscribe(Events.hitBlockEffects)
     }
 
     public disableEvents(): void {
-        world.afterEvents.itemUse.unsubscribe(Events.reloadDaggers)
         world.afterEvents.projectileHitEntity.unsubscribe(Events.hitEntityEffects)
         world.afterEvents.projectileHitBlock.unsubscribe(Events.hitBlockEffects)
     }
