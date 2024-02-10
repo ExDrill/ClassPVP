@@ -15,11 +15,12 @@ import EquipCommand from './commands/equip'
 import EventCommand from './commands/event'
 import SetCountdownCommand from './commands/setCountdown'
 import StartCommand from './commands/start'
+import TimerCommand from './commands/timer'
 
 // Gamemode registry
 export const GAMEMODES: Map<string, Gamemode> = new Map<string, Gamemode>([
-    ['deathmatch', new Deathmatch()],
-    ['team_deathmatch', new TeamDeathmatch()]
+    ['Deathmatch', new Deathmatch()],
+    ['Team Deathmatch', new TeamDeathmatch()]
 ])
 
 // Player class registry
@@ -34,7 +35,8 @@ export const COMMANDS: Command[] = [
     new EquipCommand(),
     new EventCommand(),
     new SetCountdownCommand(),
-    new StartCommand()
+    new StartCommand(),
+    new TimerCommand()
 ]
 
 world.afterEvents.worldInitialize.subscribe(LobbyEvents.initEndRound)

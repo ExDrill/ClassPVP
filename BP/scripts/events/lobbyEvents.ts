@@ -1,7 +1,6 @@
 import { system, world, Player, WorldInitializeAfterEvent, PlayerJoinAfterEvent } from '@minecraft/server'
 import * as Events from './gameEvents'
 import { GAMEMODES } from '../main'
-import Gamemode from '../modes/gamemode'
 
 let intermissionInterval: number
 
@@ -59,6 +58,17 @@ export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
     }, 1)
 }
 
+/**
+ * Starts the game found in the class_pvp:gamemode dynamic property
+ */
+export function startGame(): void {
+    const modeName = world.getDynamicProperty('class_pvp:gamemode') as string
+    const gamemode = GAMEMODES.get(modeName)
+
+    if (gamemode)
+        gamemode.startRound()
+}
+
 export function endGame(): void {
     const gamemodeId = world.getDynamicProperty('class_pvp:gamemode') as string
     if (gamemodeId && gamemodeId !== 'none') {
@@ -67,7 +77,6 @@ export function endGame(): void {
             gamemode.endRound()
         }
     }
-    startIntermission()
 }
 
 /**
@@ -123,7 +132,7 @@ export function endVote(): void {
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 
     const voteMap = new Map<string, number>()
-    const modeKeys = Object.keys(GAMEMODES)
+    const modeKeys = Array.from(GAMEMODES.keys())
     for (const key of modeKeys)
         voteMap.set(key, 0)
 
@@ -148,22 +157,12 @@ export function endVote(): void {
     }
 
     if (!gamemode || gamemode === 'none') {
-        const random = Math.floor(Math.random() * modeKeys.length);
+        const random = Math.floor(Math.random() * GAMEMODES.size);
         gamemode = modeKeys[random]
     }
 
     world.setDynamicProperty('class_pvp:gamemode', gamemode)
     world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
-}
-
-/**
- * Starts the game found in the class_pvp:gamemode dynamic property
- */
-export function startGame(): void {
-    const modeName = world.getDynamicProperty('class_pvp:gamemode') as string
-    const gamemode = GAMEMODES[modeName] as Gamemode
-
-    gamemode.startRound()
 }
 
 /**

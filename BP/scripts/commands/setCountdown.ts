@@ -1,12 +1,12 @@
 import { setCountdownLength, setCountdown } from '../events/lobbyEvents'
-import Command from './command'
+import Command, { ArgType } from './command'
 
 export default class SetCountdownCommand extends Command {
     public constructor() {
         super('countdown', true, ['number'])
     }
 
-    public run(event, args: (string | number)[]): void {
+    public run(event, args: ArgType[]): void {
         const length = args[0] as number
 
         setCountdownLength(length)

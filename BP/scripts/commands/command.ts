@@ -28,14 +28,12 @@ export default abstract class Command {
             const type = this.argTypes[i]
             const arg = splitArgs[i]
 
-            if (type === 'string')
-                args.push(arg)
-            else if (type === 'number')
-                args.push(Number.parseInt(arg))
-            else if (type === 'boolean')
-                args.push(parseBoolean(arg))
-            else
-                throw new TypeError('Invalid type')
+            switch (type) {
+                case 'string': { args.push(arg); break }
+                case 'number': { args.push(Number.parseInt(arg)); break }
+                case 'boolean': { args.push(parseBoolean(arg)); break }
+                default: { throw new TypeError(`Invalid type <${type}>`) }
+            }
         }
 
         return args
