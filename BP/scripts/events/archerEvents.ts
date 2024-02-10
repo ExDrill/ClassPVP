@@ -6,6 +6,7 @@ export function hitEntityEffects(event: ProjectileHitEntityAfterEvent) {
     const location = event.location
 
     if (projectile.typeId != 'class_pvp:throwing_dagger') return
+    if (!projectile.lifetimeState) return
 
     const mobEffect = projectile.getProperty('class_pvp:mob_effect') as string
 
