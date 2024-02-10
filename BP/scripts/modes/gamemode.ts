@@ -1,6 +1,6 @@
-import { world, system } from '@minecraft/server'
+import { world, system, EntityComponentTypes } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
-import { endGame } from '../events/lobbyEvents'
+import { startIntermission } from '../events/lobbyEvents'
 import * as Events from '../events/gameEvents'
 import * as Bossbar from '../utils/bossbarHelper'
 import { PLAYER_CLASSES } from '../main'
@@ -8,14 +8,14 @@ import { PLAYER_CLASSES } from '../main'
 export default abstract class Gamemode {
     private ongoingInterval?: number
     // private roundDurationTicks: number = 4800
-    private roundDurationTicks = 400
+    private roundDurationTicks: number = 400
 
     public startRound(): void {
         if (this.ongoingInterval) {
             console.warn('Warning: There is already an ongoing round!')
             return
         }
-        this.ongoingInterval = system.runInterval(this.tick, 1)
+        this.ongoingInterval = system.runInterval(this.tick.bind(this), 1)
         world.beforeEvents.chatSend.subscribe(Events.chatColor)
         this.enableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
@@ -36,12 +36,13 @@ export default abstract class Gamemode {
             system.clearRun(this.ongoingInterval)
         this.ongoingInterval = undefined
         world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
+        Bossbar.clearBossbars()
         this.disableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
             playerClass.disableEvents()
         }
         removeObjectives()
-        Bossbar.getBossbarEntity()?.remove()
+        startIntermission()
     }
 
     /**
@@ -70,10 +71,14 @@ export default abstract class Gamemode {
     public tick(): void {
         const roundTime = Gamemode.getRoundTime()
         if (roundTime - 1 == 0) {
-            endGame()
+            this.endRound()
         }
         else {
             Gamemode.setRoundTime(roundTime - 1)
+            Bossbar.getBossbarEntities().forEach(entity => {
+                const healthComponent = entity.getComponent(EntityComponentTypes.Health)
+                healthComponent.setCurrentValue(((roundTime - 1) / this.roundDurationTicks) * healthComponent.effectiveMax)
+            })
         }
     }
 

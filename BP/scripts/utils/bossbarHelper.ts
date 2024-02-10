@@ -1,25 +1,26 @@
 import { world, Entity, Vector3 } from '@minecraft/server'
 
 const bossbarTag = 'class_pvp:bossbar'
-const armorStandPosition: Vector3 = { x: 0, y: 0, z: 0 }
+const pos: Vector3 = { x: 0, y: -60, z: 0 }
 
 export function createBossbarEntity(): Entity {
-    const overworld = world.getDimension('overworld')
-    const entity = overworld
-        .spawnEntity('minecraft:armor_stand', armorStandPosition)
-
-    entity.teleport(armorStandPosition)
-    entity.addTag(bossbarTag)
+    const entity = world.getDimension('overworld')
+        .spawnEntity('class_pvp:round_timer', pos)
 
     return entity
 }
 
-export function getBossbarEntity(): Entity {
+export function getBossbarEntities(): Entity[] {
     const entities = world.getDimension('overworld').getEntities({
-        tags: [bossbarTag]
+        type: 'class_pvp:round_timer'
     })
 
     if (entities.length >= 0)
-        return entities[0]
+        return entities
     return undefined
+}
+
+export function clearBossbars() {
+    getBossbarEntities()?.forEach(
+        entity => entity.triggerEvent('class_pvp:round_over'))
 }

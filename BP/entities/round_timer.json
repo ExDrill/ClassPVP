@@ -13,13 +13,36 @@
                 "max": 100
             },
             "minecraft:boss": {
-                "hud_range": 1000,
+                "hud_range": 100000000000,
                 "name": "entity.class_pvp:round_timer.name",
                 "should_darken_sky": false
             },
             "minecraft:tick_world": {
                 "never_despawn": true,
                 "radius": 2
+            },
+            "minecraft:collision_box": {
+                "width": 1,
+                "height": 1
+            },
+            "minecraft:physics": {
+                "has_gravity": false,
+                "push_towards_closest_space": false,
+                "has_collision": true
+            }
+        },
+        "events": {
+            "class_pvp:round_over": {
+                "add": {
+                    "component_groups": [
+                        "class_pvp:instant_despawn"
+                    ]
+                }
+            }
+        },
+        "component_groups": {
+            "class_pvp:instant_despawn": {
+                "minecraft:instant_despawn": {}
             }
         }
     }
