@@ -1,4 +1,4 @@
-import { system, world, Player, WorldInitializeAfterEvent, PlayerJoinAfterEvent } from '@minecraft/server'
+import { system, world, Player, WorldInitializeAfterEvent, PlayerSpawnAfterEvent } from '@minecraft/server'
 import * as Events from './gameEvents'
 import { GAMEMODES } from '../main'
 
@@ -31,11 +31,13 @@ export function setCountdownLength(ticks: number): void {
  * Ends the ongoing round and sets default countdown
  * @param {WorldInitializeAfterEvent} event World initialize event
  */
-export function initEndRound(event: WorldInitializeAfterEvent): void {
+export function init(event: WorldInitializeAfterEvent): void {
+    const dimension = world.getDimension('overworld')
+    dimension.runCommand('function gamerules')
+
     if (!getCountdownLength()) {
         setCountdownLength(1200)
     }
-
     const interval = system.runInterval(() => {
         const players = world.getAllPlayers()
         if (players.length <= 0) return
@@ -49,13 +51,12 @@ export function initEndRound(event: WorldInitializeAfterEvent): void {
  * Removes the vote of a player that has just joined
  * @param {PlayerJoinAfterEvent} event Player Join Event
  */
-export function removeVoteOnJoin(event: PlayerJoinAfterEvent): void {
-    const interval = system.runInterval(() => {
-        const player = world.getPlayers({ name: event.playerName })[0]
-        if (!player) return
-        system.clearRun(interval)
+export function removeVoteOnSpawn(event: PlayerSpawnAfterEvent): void {
+    const player = event.player
+
+    if (event.initialSpawn) {
         player.setDynamicProperty('class_pvp:vote', 'none')
-    }, 1)
+    }
 }
 
 /**

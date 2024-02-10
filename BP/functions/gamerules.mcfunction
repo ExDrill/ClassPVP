@@ -1,0 +1,6 @@
+gamerule keepinventory true
+gamerule domobspawning false
+gamerule showbordereffect false
+gamerule dodaylightcycle false
+gamerule doweathercycle false
+gamerule doimmediaterespawn true

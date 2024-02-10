@@ -39,6 +39,6 @@ export const COMMANDS: Command[] = [
     new TimerCommand()
 ]
 
-world.afterEvents.worldInitialize.subscribe(LobbyEvents.initEndRound)
-world.afterEvents.playerJoin.subscribe(LobbyEvents.removeVoteOnJoin)
-world.beforeEvents.chatSend.subscribe(Command.commandEvent)
+world.afterEvents.worldInitialize.subscribe(LobbyEvents.init)
+world.afterEvents.playerSpawn.subscribe(LobbyEvents.removeVoteOnSpawn)
+world.beforeEvents.chatSend.subscribe(Command.init)

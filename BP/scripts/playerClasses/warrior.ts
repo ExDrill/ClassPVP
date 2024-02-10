@@ -1,4 +1,5 @@
-import { Player, EquipmentSlot } from '@minecraft/server'
+import { world, Player, EquipmentSlot } from '@minecraft/server'
+import * as Events from '../events/warriorEvents'
 import PlayerClass from './playerClass'
 
 export default class WarriorClass extends PlayerClass {
@@ -8,10 +9,11 @@ export default class WarriorClass extends PlayerClass {
     }
 
     public enableEvents(): void {
-
+        world.afterEvents.entityHurt.subscribe(Events.performSweepAttack)
     }
 
     public disableEvents(): void {
+        world.afterEvents.entityHurt.unsubscribe(Events.performSweepAttack)
     }
 
     public equip(player: Player): void {

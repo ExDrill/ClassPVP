@@ -2,10 +2,10 @@
     "format_version": "1.20.50",
     "minecraft:entity": {
         "description": {
-            "identifier": "class_pvp:thrown_dagger",
+            "identifier": "class_pvp:throwing_dagger",
             "properties": {
                 "class_pvp:mob_effect": {
-                    "client_sync": false,
+                    "client_sync": true,
                     "type": "enum",
                     "default": "none",
                     "values": [
@@ -21,7 +21,7 @@
         },
         "components": {
             "minecraft:projectile": {
-                "gravity": 0.01,
+                "gravity": 0.05,
                 "power": 1.5,
                 "anchor": 1,
                 "offset": [ 0, -0.65, -0.15 ],

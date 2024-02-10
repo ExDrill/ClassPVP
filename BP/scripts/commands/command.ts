@@ -39,7 +39,7 @@ export default abstract class Command {
         return args
     }
 
-    public static commandEvent(event: ChatSendBeforeEvent) {
+    public static init(event: ChatSendBeforeEvent) {
         const sender = event.sender
         const message = event.message
         const command = Command.getCommand(message)

@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.50",
+	"format_version": "1.20.60",
 	"sound_definitions": {
 		"item.throwing_dagger.hit_poison": {
 			"category": "player",
@@ -20,6 +20,19 @@
 			"max_distance": 12,
 			"sounds": [
 				"sounds/fed"
+			]
+		},
+		"random.sweep": {
+			"category": "player",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/random/sweep1",
+				"sounds/random/sweep2",
+				"sounds/random/sweep3",
+				"sounds/random/sweep4",
+				"sounds/random/sweep5",
+				"sounds/random/sweep6",
+				"sounds/random/sweep7"
 			]
 		}
 	}
