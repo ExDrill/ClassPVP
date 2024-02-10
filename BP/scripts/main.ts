@@ -10,11 +10,10 @@ import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
-import EndCommand from './commands/end'
 import EquipCommand from './commands/equip'
 import EventCommand from './commands/event'
+import GameCommand from './commands/game'
 import SetCountdownCommand from './commands/setCountdown'
-import StartCommand from './commands/start'
 import TimerCommand from './commands/timer'
 
 // Gamemode registry
@@ -31,11 +30,10 @@ export const PLAYER_CLASSES: Map<string, PlayerClass> = new Map([
 
 // Commands registry
 export const COMMANDS: Command[] = [
-    new EndCommand(),
     new EquipCommand(),
     new EventCommand(),
+    new GameCommand(),
     new SetCountdownCommand(),
-    new StartCommand(),
     new TimerCommand()
 ]
 

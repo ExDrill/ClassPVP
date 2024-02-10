@@ -77,7 +77,8 @@ export default abstract class Gamemode {
             Gamemode.setRoundTime(roundTime - 1)
             Bossbar.getBossbarEntities().forEach(entity => {
                 const healthComponent = entity.getComponent(EntityComponentTypes.Health)
-                healthComponent.setCurrentValue(((roundTime - 1) / this.roundDurationTicks) * healthComponent.effectiveMax)
+                const value = ((roundTime - 1) / this.roundDurationTicks) * healthComponent.effectiveMax
+                healthComponent.setCurrentValue(Math.floor(value))
             })
         }
     }
