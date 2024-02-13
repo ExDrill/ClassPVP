@@ -1,4 +1,5 @@
 import { world, ProjectileHitEntityAfterEvent, ProjectileHitBlockAfterEvent } from '@minecraft/server'
+import { randomBetween } from '../utils/helper'
 
 export function hitEntityEffects(event: ProjectileHitEntityAfterEvent) {
     const entity = event.getEntityHit().entity
@@ -28,10 +29,11 @@ export function hitEntityEffects(event: ProjectileHitEntityAfterEvent) {
 
 export function hitBlockEffects(event: ProjectileHitBlockAfterEvent) {
     const projectile = event.projectile
+    const location = event.location
 
     if (projectile.typeId != 'class_pvp:throwing_dagger') return
+    if (!projectile.lifetimeState) return
 
-    if (projectile.lifetimeState) {
-        projectile.remove()
-    }
+    world.playSound('item.throwing_dagger.land', location)
+    projectile.remove()
 }

@@ -1,6 +1,13 @@
 {
 	"format_version": "1.20.60",
 	"sound_definitions": {
+		"mob.villager.idle": {
+			"category": "neutral",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/fed"
+			]
+		},
 		"item.throwing_dagger.hit_poison": {
 			"category": "player",
 			"max_distance": 12,
@@ -13,6 +20,13 @@
 			"max_distance": 12,
 			"sounds": [
 				"sounds/item/throwing_dagger/hit_slowness"
+			]
+		},
+		"item.throwing_dagger.land": {
+			"category": "player",
+			"max_distance": 12,
+			"sounds": [
+				"sounds/item/throwing_dagger/land"
 			]
 		},
 		"random.fed": {
