@@ -13,3 +13,13 @@ item.class_pvp:archer_boots=Archer Boots
 item.class_pvp:throwing_dagger=Throwing Dagger
 
 entity.class_pvp:round_timer.name=Round Timer
+
+ui.title.class_pvp:vote=Vote
+ui.body.class_pvp:vote=Vote for a gamemode
+ui.title.class_pvp:class_select=Select a Class
+
+gamemode.class_pvp:deathmatch=Deathmatch
+gamemode.class_pvp:team_deathmatch=Team Deathmatch
+
+class.class_pvp:warrior=Warrior
+class.class_pvp:archer=Archer

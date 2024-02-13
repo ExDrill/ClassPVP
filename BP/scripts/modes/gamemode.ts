@@ -17,6 +17,8 @@ export default abstract class Gamemode {
         }
         this.ongoingInterval = system.runInterval(this.tick.bind(this), 1)
         world.beforeEvents.chatSend.subscribe(Events.chatColor)
+        for (const player of world.getAllPlayers())
+            player.setProperty('class_pvp:player_class', 'none')
         this.enableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
             playerClass.enableEvents()
@@ -36,6 +38,8 @@ export default abstract class Gamemode {
             system.clearRun(this.ongoingInterval)
         this.ongoingInterval = undefined
         world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
+        for (const player of world.getAllPlayers())
+            player.setProperty('class_pvp:player_class', 'none')
         Bossbar.clearBossbars()
         this.disableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
@@ -77,8 +81,9 @@ export default abstract class Gamemode {
             Gamemode.setRoundTime(roundTime - 1)
             Bossbar.getBossbarEntities().forEach(entity => {
                 const healthComponent = entity.getComponent(EntityComponentTypes.Health)
-                const value = ((roundTime - 1) / this.roundDurationTicks) * healthComponent.effectiveMax
-                healthComponent.setCurrentValue(Math.floor(value))
+                const value = Math.floor(((roundTime - 1) / this.roundDurationTicks) * healthComponent.effectiveMax)
+                if (value <= 0) return
+                healthComponent.setCurrentValue(value)
             })
         }
     }

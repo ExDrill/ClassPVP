@@ -1,3 +1,5 @@
+import { ItemStack } from '@minecraft/server'
+
 export function randomBetween(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -51,6 +53,11 @@ export function stringNames(names: string[]): string {
 export function parseBoolean(str: string): boolean {
     if (str === 'true') return true
     return false
+}
+
+export function equalStacks(one: ItemStack, two: ItemStack) {
+    return one.amount === two.amount
+        && one.typeId === two.typeId
 }
 
 // export function shuffle<T>(array: T[]): T[] {
