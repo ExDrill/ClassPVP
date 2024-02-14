@@ -26,7 +26,7 @@ export default abstract class Gamemode {
         this.addObjectives()
         this.assignTeams()
         Gamemode.setRoundTime(this.roundDurationTicks)
-        Bossbar.createBossbarEntity()
+        // Bossbar.createBossbarEntity()
     }
 
     public endRound(): void {
