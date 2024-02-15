@@ -97,8 +97,8 @@ export function startIntermission(): void {
 
     if (getCountdownLength() >= 0)
         startCountdown()
-    world.afterEvents.itemUse.subscribe(Events.compassVote)
-    world.afterEvents.itemUse.subscribe(Events.classSelect)
+    world.beforeEvents.itemUse.subscribe(Events.compassVote)
+    world.beforeEvents.itemUse.subscribe(Events.classSelect)
     // world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
 }
 
@@ -132,8 +132,8 @@ function intermissionTick(): void {
  * Ends the voting period and sets the gamemode to the winner.
  */
 export function endVote(): void {
-    world.afterEvents.itemUse.unsubscribe(Events.compassVote)
-    world.afterEvents.itemUse.unsubscribe(Events.classSelect)
+    world.beforeEvents.itemUse.unsubscribe(Events.compassVote)
+    world.beforeEvents.itemUse.unsubscribe(Events.classSelect)
     // world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 
     const voteMap = new Map<string, number>()
@@ -143,7 +143,7 @@ export function endVote(): void {
 
     for (const player of world.getAllPlayers()) {
         let gamemode: string = getPlayerVote(player);
-        if (!gamemode) continue
+        if (!gamemode || gamemode === 'none') continue
 
         const lastValue = voteMap.get(gamemode)
         voteMap.set(gamemode, lastValue + 1)

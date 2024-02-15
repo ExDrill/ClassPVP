@@ -1,11 +1,10 @@
-import { world, system, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent, ItemUseAfterEvent, EntityComponentTypes } from '@minecraft/server'
+import { world, system, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent, ItemUseBeforeEvent } from '@minecraft/server'
 import { setScore, addScore } from '../utils/scoreboard'
 import { GAMEMODES, PLAYER_CLASSES } from '../main'
 import * as UI from '../ui'
 import Gamemode from '../modes/gamemode'
 import { getTeamColor, TEAMS } from '../utils/teams'
 import Command from '../commands/command'
-import { equalStacks } from '../utils/helper'
 
 export function healthOnKill(event: EntityDieAfterEvent): void {
     const damageSource = event.damageSource
@@ -56,33 +55,35 @@ export function signVote(event: PlayerInteractWithBlockAfterEvent): void {
     player.setDynamicProperty('class_pvp:vote', text)
 }
 
-export async function compassVote(event: ItemUseAfterEvent): Promise<void> {
+export function compassVote(event: ItemUseBeforeEvent): void {
     const player = event.source
     const itemId = event.itemStack.typeId
 
     if (itemId !== 'minecraft:compass') return
+    event.cancel = true
 
-    const result = await UI.VOTE.show(player)
-    if (result.canceled) return
+    system.run(async () => {
+        const result = await UI.VOTE.show(player)
+        if (result.canceled) return
 
-    const vote = Array.from(GAMEMODES.keys())[result.selection]
-    player.setDynamicProperty('class_pvp:vote', vote)
+        const vote = Array.from(GAMEMODES.keys())[result.selection]
+        player.setDynamicProperty('class_pvp:vote', vote)
+    })
 }
 
-export async function classSelect(event: ItemUseAfterEvent): Promise<void> {
+export function classSelect(event: ItemUseBeforeEvent): void {
     const player = event.source
-    const stack = event.itemStack
+    if (player.selectedSlot !== 1) return
+    event.cancel = true
 
-    const inventory = player.getComponent(EntityComponentTypes.Inventory)
-    const stackTwo = inventory.container.getItem(1)
-    if (!equalStacks(stack, stackTwo)) return
+    system.run(async () => {
+        const result = await UI.CLASS.show(player)
+        if (result.canceled) return
 
-    const result = await UI.CLASS.show(player)
-    if (result.canceled) return
-
-    const chosenClass = Array.from(PLAYER_CLASSES.keys())[result.selection]
-    player.setProperty('class_pvp:player_class', chosenClass)
-    system.runTimeout(() => player.sendMessage(player.getProperty('class_pvp:player_class') as string), 1)
+        const chosenClass = Array.from(PLAYER_CLASSES.keys())[result.selection]
+        player.setProperty('class_pvp:player_class', chosenClass)
+        system.runTimeout(() => player.sendMessage(player.getProperty('class_pvp:player_class') as string), 1)
+    })
 }
 
 export function chatColor(event: ChatSendBeforeEvent): void {
