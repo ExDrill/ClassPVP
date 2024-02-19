@@ -4,6 +4,8 @@ import { startIntermission } from '../events/lobbyEvents'
 import * as Events from '../events/gameEvents'
 import * as Bossbar from '../utils/bossbarHelper'
 import { PLAYER_CLASSES } from '../main'
+import PlayerClass from '../playerClasses/playerClass'
+import { randomBetween } from '../utils/helper'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
@@ -17,12 +19,30 @@ export default abstract class Gamemode {
         }
         this.ongoingInterval = system.runInterval(this.tick.bind(this), 1)
         world.beforeEvents.chatSend.subscribe(Events.chatColor)
-        for (const player of world.getAllPlayers())
-            player.setProperty('class_pvp:player_class', 'none')
+
+        for (const player of world.getAllPlayers()) {
+            const tmpProperty = player.getDynamicProperty('class_pvp:temp_class') as string
+
+            let classProperty: string
+            if (!tmpProperty || tmpProperty === 'none') {
+                const keys = Array.from(PLAYER_CLASSES.keys())
+                classProperty = keys[randomBetween(0, keys.length - 1)]
+            } else
+                classProperty = tmpProperty
+            player.setProperty('class_pvp:player_class', classProperty)
+            const playerClass = PLAYER_CLASSES.get(classProperty)
+
+            const invContainer = player.getComponent(EntityComponentTypes.Inventory).container
+            invContainer.clearAll()
+            playerClass.equip(player)
+        }
         this.enableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
             playerClass.enableEvents()
         }
+
+        world.getDimension('overworld')
+            .runCommand('gamerule pvp true')
         this.addObjectives()
         this.assignTeams()
         Gamemode.setRoundTime(this.roundDurationTicks)
@@ -38,13 +58,19 @@ export default abstract class Gamemode {
             system.clearRun(this.ongoingInterval)
         this.ongoingInterval = undefined
         world.beforeEvents.chatSend.unsubscribe(Events.chatColor)
-        for (const player of world.getAllPlayers())
+
+        for (const player of world.getAllPlayers()) {
+            player.setDynamicProperty('class_pvp:temp_class', 'none')
             player.setProperty('class_pvp:player_class', 'none')
+        }
         Bossbar.clearBossbars()
         this.disableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
             playerClass.disableEvents()
         }
+
+        world.getDimension('overworld')
+            .runCommand('gamerule pvp false')
         removeObjectives()
         startIntermission()
     }

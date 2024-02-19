@@ -1,10 +1,16 @@
-import { world, system, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent, ItemUseBeforeEvent } from '@minecraft/server'
+import { world, system, EntityDieAfterEvent, EntityHealthChangedAfterEvent, PlayerInteractWithBlockAfterEvent, BlockComponentTypes, ChatSendBeforeEvent, ItemUseBeforeEvent, EntityComponentTypes, ItemStack, ItemLockMode } from '@minecraft/server'
 import { setScore, addScore } from '../utils/scoreboard'
 import { GAMEMODES, PLAYER_CLASSES } from '../main'
 import * as UI from '../ui'
 import Gamemode from '../modes/gamemode'
 import { getTeamColor, TEAMS } from '../utils/teams'
 import Command from '../commands/command'
+import { refreshVoteBoard } from './lobbyEvents'
+
+const classItems: string[] = [
+    'minecraft:stone_sword',
+    'minecraft:bow'
+]
 
 export function healthOnKill(event: EntityDieAfterEvent): void {
     const damageSource = event.damageSource
@@ -32,7 +38,7 @@ export function rewardTeamScore(event: EntityDieAfterEvent): void {
     const team = killer.getProperty('class_pvp:team') as string
     if (team === 'none') return
 
-    addScore('class_pvp:eliminations', TEAMS[team] + team, 1)
+    addScore('class_pvp:eliminations', `team.class_pvp:${team}`, 1)
 }
 
 export function healthDisplay(event: EntityHealthChangedAfterEvent): void {
@@ -68,6 +74,7 @@ export function compassVote(event: ItemUseBeforeEvent): void {
 
         const vote = Array.from(GAMEMODES.keys())[result.selection]
         player.setDynamicProperty('class_pvp:vote', vote)
+        system.runTimeout(() => refreshVoteBoard(), 1)
     })
 }
 
@@ -80,9 +87,18 @@ export function classSelect(event: ItemUseBeforeEvent): void {
         const result = await UI.CLASS.show(player)
         if (result.canceled) return
 
-        const chosenClass = Array.from(PLAYER_CLASSES.keys())[result.selection]
-        player.setProperty('class_pvp:player_class', chosenClass)
-        system.runTimeout(() => player.sendMessage(player.getProperty('class_pvp:player_class') as string), 1)
+        const idx = result.selection
+        const chosenClass = Array.from(PLAYER_CLASSES.keys())[idx]
+        player.setDynamicProperty('class_pvp:temp_class', chosenClass)
+
+        const inventory = player.getComponent(EntityComponentTypes.Inventory)
+        const item = classItems[idx]
+        const stack = new ItemStack(item, 1)
+        stack.lockMode = ItemLockMode.slot
+        inventory.container.setItem(1, stack)
+
+        system.runTimeout(() =>
+            player.sendMessage(player.getDynamicProperty('class_pvp:temp_class') as string), 1)
     })
 }
 

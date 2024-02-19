@@ -1,6 +1,6 @@
 import { ChatSendBeforeEvent, system, Player } from '@minecraft/server'
 import Command, { ArgType } from './command'
-import { endGame, getCountdown, endVote, startGame, stopCountdown } from '../events/lobbyEvents'
+import { endGame, endVote, startGame, stopCountdown } from '../events/lobbyEvents'
 import Gamemode from '../modes/gamemode'
 
 export default class GameCommand extends Command {
@@ -19,8 +19,6 @@ export default class GameCommand extends Command {
     }
 
     private static start() {
-        if (getCountdown() < 0) return
-
         stopCountdown()
         endVote()
         system.runTimeout(() => startGame(), 1)

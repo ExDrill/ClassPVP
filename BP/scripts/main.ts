@@ -11,6 +11,7 @@ import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
 import BossbarPosCommand from './commands/bossbarPositions'
+import DebugCommand from './commands/debug'
 import EquipCommand from './commands/equip'
 import EventCommand from './commands/event'
 import GameCommand from './commands/game'
@@ -34,6 +35,7 @@ export const PLAYER_CLASSES: Map<string, PlayerClass> = new Map([
 // Commands registry
 export const COMMANDS: Command[] = [
     new BossbarPosCommand(),
+    new DebugCommand(),
     new EquipCommand(),
     new EventCommand(),
     new GameCommand(),
