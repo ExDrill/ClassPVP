@@ -31,5 +31,5 @@ function sweepEffects(dimension: Dimension, pos: Vector) {
 }
 
 function getSweepPos(attacker: Entity, victim: Entity) {
-    return Vector.add(attacker.location, Vector.multiply(Vector.subtract(victim.getHeadLocation(), attacker.location), new Vector(0.5, 0.75, 0.5)))
+    return Vector.divide(Vector.add(attacker.getHeadLocation(), victim.getHeadLocation()), 2)
 }

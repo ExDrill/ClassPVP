@@ -25,8 +25,7 @@ export default class ArcherClass extends PlayerClass {
         const container = inventory.container
         const equippable = player.getComponent('minecraft:equippable')
 
-        equippable.setEquipment(EquipmentSlot.Head, PlayerClass.createItemStack('class_pvp:archer_helmet'))
-
+        equippable.setEquipment(EquipmentSlot.Chest, PlayerClass.createItemStack('class_pvp:archer_armor'))
         container.setItem(0, ArcherClass.createBow())
         container.setItem(1, ArcherClass.createThrowingDagger('slowness', 3))
         container.setItem(2, ArcherClass.createThrowingDagger('poison', 1))
