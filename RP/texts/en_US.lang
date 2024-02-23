@@ -35,5 +35,13 @@ team.class_pvp:white=White
 team.class_pvp:pink=Pink
 team.class_pvp:grey=Gray
 
-phrases.class_pvp:wins=wins
+## Phrases and objectives
+phrases.class_pvp:team_wins=%s%s wins
+phrases.class_pvp:player_wins=%s wins
+phrases.class_pvp:win=%s win
 phrases.class_pvp:tie=Tie
+phrases.class_pvp:nobody_wins=Nobody Wins
+
+class_pvp:deathmatch_eliminations=Eliminations
+class_pvp:team_eliminations=Team Points
+class_pvp:health=Health

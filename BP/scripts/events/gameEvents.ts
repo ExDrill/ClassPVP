@@ -88,17 +88,13 @@ export function classSelect(event: ItemUseBeforeEvent): void {
         if (result.canceled) return
 
         const idx = result.selection
-        const chosenClass = Array.from(PLAYER_CLASSES.keys())[idx]
-        player.setDynamicProperty('class_pvp:temp_class', chosenClass)
+        const className = Array.from(PLAYER_CLASSES.keys())[idx]
+        player.setDynamicProperty('class_pvp:temp_class', className)
 
         const inventory = player.getComponent(EntityComponentTypes.Inventory)
-        const item = classItems[idx]
-        const stack = new ItemStack(item, 1)
+        const stack = PLAYER_CLASSES.get(className).display.clone()
         stack.lockMode = ItemLockMode.slot
         inventory.container.setItem(1, stack)
-
-        system.runTimeout(() =>
-            player.sendMessage(player.getDynamicProperty('class_pvp:temp_class') as string), 1)
     })
 }
 

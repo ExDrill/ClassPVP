@@ -4,3 +4,4 @@ gamerule showbordereffect false
 gamerule dodaylightcycle false
 gamerule doweathercycle false
 gamerule doimmediaterespawn true
+gamerule showtags false

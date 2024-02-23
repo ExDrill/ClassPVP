@@ -1,8 +1,9 @@
-import { world, Player, EquipmentSlot } from '@minecraft/server'
+import { world, Player, EquipmentSlot, ItemStack } from '@minecraft/server'
 import * as Events from '../events/warriorEvents'
 import PlayerClass from './playerClass'
 
 export default class WarriorClass extends PlayerClass {
+    display = new ItemStack('minecraft:stone_sword')
 
     public constructor() {
         super('warrior')

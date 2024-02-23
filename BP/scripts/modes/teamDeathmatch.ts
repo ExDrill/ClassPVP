@@ -2,13 +2,13 @@ import { world, DisplaySlotId, ObjectiveSortOrder, RawMessage } from '@minecraft
 import Gamemode from './gamemode'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
 import * as Events from '../events/gameEvents'
-import { shuffle } from '../utils/helper'
+import { shuffle, objString } from '../utils/helper'
 import { getTeams, getTeamColor, TEAMS, nameFromId } from '../utils/teams'
 
 export default class TeamDeathmatch extends Gamemode {
     public addObjectives() {
-        createObjective('class_pvp:eliminations', 'Team Points')
-        createObjective('class_pvp:health', 'Health')
+        createObjective('class_pvp:eliminations', 'class_pvp:team_eliminations')
+        createObjective('class_pvp:health')
         positionObjective('class_pvp:eliminations', DisplaySlotId.Sidebar, ObjectiveSortOrder.Descending)
         positionObjective('class_pvp:health', DisplaySlotId.BelowName, ObjectiveSortOrder.Descending)
     }
@@ -71,22 +71,22 @@ export default class TeamDeathmatch extends Gamemode {
         else if (twoScore > oneScore)
             overworld.runCommandAsync(`titleraw @a title ${TeamDeathmatch.winText(teamTwo.displayName)}`)
         else
-            overworld.runCommandAsync(`titleraw @a title ${JSON.stringify({
+            overworld.runCommandAsync(`titleraw @a title ${objString<RawMessage>({
                 rawtext: [{ translate: 'phrases.class_pvp:tie' }]
-            } as RawMessage)}`)
+            })}`)
     }
 
     private static winText(teamName: string) {
         const name = nameFromId(teamName)
-        const text: RawMessage = {
-            rawtext: [
-                { text: TEAMS[name] },
-                { translate: teamName },
-                { text: ' ' },
-                { translate: 'phrases.class_pvp:wins' },
-                { text: '§r' }
-            ]
-        }
-        return JSON.stringify(text)
+        return objString<RawMessage>({
+            rawtext: [{
+                translate: 'phrases.class_pvp:team_wins', with: {
+                    rawtext: [
+                        { text: TEAMS[name] },
+                        { translate: teamName }
+                    ]
+                }
+            }]
+        })
     }
 }

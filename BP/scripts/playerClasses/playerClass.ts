@@ -2,6 +2,7 @@ import { Player, ItemStack, ItemLockMode } from '@minecraft/server'
 
 export default abstract class PlayerClass {
     private id: string
+    public readonly display: ItemStack = new ItemStack('minecraft:stick')
 
     public constructor(id: string) {
         this.id = id

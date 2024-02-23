@@ -4,13 +4,12 @@ import { startIntermission } from '../events/lobbyEvents'
 import * as Events from '../events/gameEvents'
 import * as Bossbar from '../utils/bossbarHelper'
 import { PLAYER_CLASSES } from '../main'
-import PlayerClass from '../playerClasses/playerClass'
-import { randomBetween } from '../utils/helper'
+import { randomBetween, clearPlayer } from '../utils/helper'
 
 export default abstract class Gamemode {
     private ongoingInterval?: number
-    // private roundDurationTicks: number = 4800
-    private roundDurationTicks: number = 400
+    private roundDurationTicks: number = 4800
+    // private roundDurationTicks: number = 400
 
     public startRound(): void {
         if (this.ongoingInterval) {
@@ -32,9 +31,9 @@ export default abstract class Gamemode {
             player.setProperty('class_pvp:player_class', classProperty)
             const playerClass = PLAYER_CLASSES.get(classProperty)
 
-            const invContainer = player.getComponent(EntityComponentTypes.Inventory).container
-            invContainer.clearAll()
+            clearPlayer(player)
             playerClass.equip(player)
+            player.selectedSlot = 0
         }
         this.enableEvents()
         for (const playerClass of PLAYER_CLASSES.values()) {
@@ -62,6 +61,9 @@ export default abstract class Gamemode {
         for (const player of world.getAllPlayers()) {
             player.setDynamicProperty('class_pvp:temp_class', 'none')
             player.setProperty('class_pvp:player_class', 'none')
+
+            clearPlayer(player)
+            player.selectedSlot = 0
         }
         Bossbar.clearBossbars()
         this.disableEvents()

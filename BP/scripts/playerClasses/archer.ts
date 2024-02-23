@@ -3,6 +3,8 @@ import * as Events from '../events/archerEvents'
 import PlayerClass from './playerClass'
 
 export default class ArcherClass extends PlayerClass {
+    public readonly ItemStack
+    display = new ItemStack('minecraft:bow')
 
     public constructor() {
         super('archer')

@@ -1,4 +1,4 @@
-import { ItemStack, RawMessage, RawText } from '@minecraft/server'
+import { EntityComponentTypes, EquipmentSlot, ItemStack, Player } from '@minecraft/server'
 
 export function randomBetween(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min)
@@ -58,6 +58,19 @@ export function parseBoolean(str: string): boolean {
 export function equalStacks(one: ItemStack, two: ItemStack) {
     return one.amount === two.amount
         && one.typeId === two.typeId
+}
+
+export function objString<T>(obj: T): string {
+    return JSON.stringify(obj)
+}
+
+export function clearPlayer(player: Player): void {
+    const invContainer = player.getComponent(EntityComponentTypes.Inventory).container
+    const equipment = player.getComponent(EntityComponentTypes.Equippable)
+
+    invContainer.clearAll()
+    for (const slot of Object.values(EquipmentSlot))
+        equipment.setEquipment(slot)
 }
 
 // export function shuffle<T>(array: T[]): T[] {

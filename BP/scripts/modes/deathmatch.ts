@@ -1,14 +1,14 @@
-import { world, DisplaySlotId, ObjectiveSortOrder, ScoreboardIdentityType, Player } from '@minecraft/server'
+import { world, DisplaySlotId, ObjectiveSortOrder, ScoreboardIdentityType, Player, RawMessage } from '@minecraft/server'
 import Gamemode from './gamemode'
 import * as Events from '../events/gameEvents'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
-import { shuffle, stringNames } from '../utils/helper'
+import { shuffle, stringNames, objString } from '../utils/helper'
 import { getTeams, getTeamColor } from '../utils/teams'
 
 export default class Deathmatch extends Gamemode {
     public addObjectives(): void {
-        createObjective('class_pvp:eliminations', 'Eliminations')
-        createObjective('class_pvp:health', 'Health')
+        createObjective('class_pvp:eliminations', 'class_pvp:deathmatch_eliminations')
+        createObjective('class_pvp:health')
         positionObjective('class_pvp:eliminations', DisplaySlotId.Sidebar, ObjectiveSortOrder.Descending)
         positionObjective('class_pvp:health', DisplaySlotId.BelowName, ObjectiveSortOrder.Descending)
     }
@@ -65,10 +65,22 @@ export default class Deathmatch extends Gamemode {
         const overworld = world.getDimension('overworld')
 
         if (highestNames.length < 1)
-            overworld.runCommandAsync(`title @a title Nobody wins`)
+            overworld.runCommandAsync(`titleraw @a title ${objString<RawMessage>({
+                rawtext: [{ translate: 'phrases.class_pvp:nobody_wins' }]
+            })}`)
         else if (highestNames.length === 1)
-            overworld.runCommandAsync(`title @a title ${highestNames[0]} wins`)
+            overworld.runCommandAsync(`titleraw @a title ${objString<RawMessage>({
+                rawtext: [{
+                    translate: 'phrases.class_pvp:player_wins',
+                    with: [highestNames[0]]
+                }]
+            })}`)
         else
-            overworld.runCommandAsync(`title @a title ${stringNames(highestNames)} win`)
+            overworld.runCommandAsync(`titleraw @a title ${objString<RawMessage>({
+                rawtext: [{
+                    translate: 'phrases.class_pvp:win',
+                    with: [stringNames(highestNames)]
+                }]
+            })}`)
     }
 }
