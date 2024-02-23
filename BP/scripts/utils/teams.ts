@@ -28,3 +28,11 @@ export function getTeams() {
     arr.splice(0, 1)
     return arr
 }
+
+/**
+ * @returns {string} Returns name
+ */
+export function nameFromId(id: string): string {
+    const colonIdx = id.indexOf(':')
+    return id.substring(colonIdx + 1)
+}

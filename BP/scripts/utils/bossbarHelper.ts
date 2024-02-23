@@ -1,6 +1,5 @@
 import { world, Entity, Vector3 } from '@minecraft/server'
 
-const bossbarTag = 'class_pvp:bossbar'
 const pos: Vector3 = { x: 0, y: -60, z: 0 }
 
 export function createBossbarEntity(): Entity {

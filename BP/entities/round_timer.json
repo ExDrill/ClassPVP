@@ -13,7 +13,7 @@
                 "max": 100
             },
             "minecraft:boss": {
-                "hud_range": 100000000000,
+                "hud_range": 255,
                 "name": "entity.class_pvp:round_timer.name",
                 "should_darken_sky": false
             },

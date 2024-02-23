@@ -10,17 +10,20 @@ import WarriorClass from './playerClasses/warrior'
 import ArcherClass from './playerClasses/archer'
 
 import Command from './commands/command'
-import EndCommand from './commands/end'
+import BossbarPosCommand from './commands/bossbarPositions'
+import DebugCommand from './commands/debug'
 import EquipCommand from './commands/equip'
 import EventCommand from './commands/event'
+import GameCommand from './commands/game'
 import SetCountdownCommand from './commands/setCountdown'
-import StartCommand from './commands/start'
 import TimerCommand from './commands/timer'
+
+import * as UI from './ui'
 
 // Gamemode registry
 export const GAMEMODES: Map<string, Gamemode> = new Map<string, Gamemode>([
-    ['Deathmatch', new Deathmatch()],
-    ['Team Deathmatch', new TeamDeathmatch()]
+    ['deathmatch', new Deathmatch()],
+    ['team_deathmatch', new TeamDeathmatch()]
 ])
 
 // Player class registry
@@ -31,14 +34,18 @@ export const PLAYER_CLASSES: Map<string, PlayerClass> = new Map([
 
 // Commands registry
 export const COMMANDS: Command[] = [
-    new EndCommand(),
+    new BossbarPosCommand(),
+    new DebugCommand(),
     new EquipCommand(),
     new EventCommand(),
+    new GameCommand(),
     new SetCountdownCommand(),
-    new StartCommand(),
     new TimerCommand()
 ]
+
+UI.init()
 
 world.afterEvents.worldInitialize.subscribe(LobbyEvents.init)
 world.afterEvents.playerSpawn.subscribe(LobbyEvents.removeVoteOnSpawn)
 world.beforeEvents.chatSend.subscribe(Command.init)
+

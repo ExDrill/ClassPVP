@@ -32,7 +32,7 @@ export default abstract class Command {
                 case 'string': { args.push(arg); break }
                 case 'number': { args.push(Number.parseInt(arg)); break }
                 case 'boolean': { args.push(parseBoolean(arg)); break }
-                default: { throw new TypeError(`Invalid type <${type}>`) }
+                default: throw new TypeError(`Invalid type <${type}>`)
             }
         }
 

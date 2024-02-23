@@ -1,6 +1,7 @@
-import { system, world, Player, WorldInitializeAfterEvent, PlayerSpawnAfterEvent } from '@minecraft/server'
+import { system, world, Player, WorldInitializeAfterEvent, PlayerSpawnAfterEvent, EntityComponentTypes, ItemStack, ItemLockMode, DisplaySlotId } from '@minecraft/server'
 import * as Events from './gameEvents'
 import { GAMEMODES } from '../main'
+import { createObjective, setScore, positionObjective, deleteObjective } from '../utils/scoreboard'
 
 let intermissionInterval: number
 
@@ -33,7 +34,7 @@ export function setCountdownLength(ticks: number): void {
  */
 export function init(event: WorldInitializeAfterEvent): void {
     const dimension = world.getDimension('overworld')
-    dimension.runCommand('function gamerules')
+    system.runTimeout(() => dimension.runCommand('function gamerules'), 100)
 
     if (!getCountdownLength()) {
         setCountdownLength(1200)
@@ -56,6 +57,8 @@ export function removeVoteOnSpawn(event: PlayerSpawnAfterEvent): void {
 
     if (event.initialSpawn) {
         player.setDynamicProperty('class_pvp:vote', 'none')
+        if (!player.getProperty('class_pvp:debugging') as boolean)
+            player.runCommandAsync('gamemode adventure @s')
     }
 }
 
@@ -92,12 +95,33 @@ export function getPlayerVote(player: Player): string {
  * Starts the intermission period before a match
  */
 export function startIntermission(): void {
-    for (const player of world.getAllPlayers())
+    for (const player of world.getAllPlayers()) {
         player.setDynamicProperty('class_pvp:vote', 'none')
+        if (player.getDynamicProperty('class_pvp:debugging') as boolean === true) continue
+
+        const invContainer = player.getComponent(EntityComponentTypes.Inventory).container
+        invContainer.clearAll()
+
+        const compassStack = new ItemStack('minecraft:compass', 1)
+        const classStack = new ItemStack('minecraft:stick', 1)
+
+        compassStack.lockMode = ItemLockMode.slot
+        classStack.lockMode = ItemLockMode.slot
+
+        invContainer.setItem(0, compassStack)
+        invContainer.setItem(1, classStack)
+    }
 
     if (getCountdownLength() >= 0)
         startCountdown()
-    world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
+    world.beforeEvents.itemUse.subscribe(Events.compassVote)
+    world.beforeEvents.itemUse.subscribe(Events.classSelect)
+    // world.afterEvents.playerInteractWithBlock.subscribe(Events.signVote)
+
+    createObjective('class_pvp:votes', 'ui.title.class_pvp:vote')
+    for (const mode of GAMEMODES.keys())
+        setScore('class_pvp:votes', `gamemode.class_pvp:${mode}`, 0)
+    positionObjective('class_pvp:votes', DisplaySlotId.Sidebar)
 }
 
 export function startCountdown() {
@@ -126,11 +150,26 @@ function intermissionTick(): void {
     }
 }
 
+export function refreshVoteBoard() {
+    const obj = world.scoreboard.getObjective('class_pvp:votes')
+    for (const mode of obj.getParticipants())
+        obj.setScore(mode, 0)
+
+    for (const player of world.getAllPlayers()) {
+        const vote = player.getDynamicProperty('class_pvp:vote') as string
+        if (!vote || vote === 'none') continue
+
+        obj.addScore(`gamemode.class_pvp:${vote}`, 1)
+    }
+}
+
 /**
  * Ends the voting period and sets the gamemode to the winner.
  */
 export function endVote(): void {
-    world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
+    world.beforeEvents.itemUse.unsubscribe(Events.compassVote)
+    world.beforeEvents.itemUse.unsubscribe(Events.classSelect)
+    // world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
 
     const voteMap = new Map<string, number>()
     const modeKeys = Array.from(GAMEMODES.keys())
@@ -139,7 +178,7 @@ export function endVote(): void {
 
     for (const player of world.getAllPlayers()) {
         let gamemode: string = getPlayerVote(player);
-        if (!gamemode) continue
+        if (!gamemode || gamemode === 'none') continue
 
         const lastValue = voteMap.get(gamemode)
         voteMap.set(gamemode, lastValue + 1)
@@ -163,7 +202,7 @@ export function endVote(): void {
     }
 
     world.setDynamicProperty('class_pvp:gamemode', gamemode)
-    world.afterEvents.playerInteractWithBlock.unsubscribe(Events.signVote)
+    deleteObjective('class_pvp:votes')
 }
 
 /**

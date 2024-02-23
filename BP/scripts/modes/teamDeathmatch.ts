@@ -1,9 +1,9 @@
-import { world, DisplaySlotId, ObjectiveSortOrder } from '@minecraft/server'
+import { world, DisplaySlotId, ObjectiveSortOrder, RawMessage } from '@minecraft/server'
 import Gamemode from './gamemode'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
 import * as Events from '../events/gameEvents'
 import { shuffle } from '../utils/helper'
-import { getTeams, getTeamColor, TEAMS } from '../utils/teams'
+import { getTeams, getTeamColor, TEAMS, nameFromId } from '../utils/teams'
 
 export default class TeamDeathmatch extends Gamemode {
     public addObjectives() {
@@ -45,8 +45,8 @@ export default class TeamDeathmatch extends Gamemode {
             player.nameTag = `${getTeamColor(player)}${player.name}`
         }
 
-        setScore('class_pvp:eliminations', TEAMS[teamOne] + teamOne, 0)
-        setScore('class_pvp:eliminations', TEAMS[teamTwo] + teamTwo, 0)
+        setScore('class_pvp:eliminations', `team.class_pvp:${teamOne}`, 0)
+        setScore('class_pvp:eliminations', `team.class_pvp:${teamTwo}`, 0)
     }
 
     public endRound() {
@@ -67,10 +67,26 @@ export default class TeamDeathmatch extends Gamemode {
         const twoScore = objective.getScore(teamTwo)
         const overworld = world.getDimension('overworld')
         if (oneScore > twoScore)
-            overworld.runCommandAsync(`title @a title ${teamOne.displayName} wins§r`)
+            overworld.runCommandAsync(`titleraw @a title ${TeamDeathmatch.winText(teamOne.displayName)}`)
         else if (twoScore > oneScore)
-            overworld.runCommandAsync(`title @a title ${teamTwo.displayName} wins§r`)
+            overworld.runCommandAsync(`titleraw @a title ${TeamDeathmatch.winText(teamTwo.displayName)}`)
         else
-            overworld.runCommandAsync(`title @a title tie`)
+            overworld.runCommandAsync(`titleraw @a title ${JSON.stringify({
+                rawtext: [{ translate: 'phrases.class_pvp:tie' }]
+            } as RawMessage)}`)
+    }
+
+    private static winText(teamName: string) {
+        const name = nameFromId(teamName)
+        const text: RawMessage = {
+            rawtext: [
+                { text: TEAMS[name] },
+                { translate: teamName },
+                { text: ' ' },
+                { translate: 'phrases.class_pvp:wins' },
+                { text: '§r' }
+            ]
+        }
+        return JSON.stringify(text)
     }
 }
