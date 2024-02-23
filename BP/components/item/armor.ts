@@ -4,37 +4,25 @@ export default defineComponent((context) => {
         type: 'object',
         additionalProperties: false,
         properties: {
-            slot: {
-                type: 'string',
-                enum: [
-                    'helmet',
-                    'chestplate',
-                    'leggings',
-                    'boots'
-                ]
-            },
             protection: {
                 type: 'integer'
             }
         }
     })
-    context.template(({ slot, protection }, { create }) => {
+    context.template(({ protection }, { create }) => {
+        const components = {}
+
+        components['minecraft:icon'] = 'chestplate'
+        components['minecraft:wearable'] = {
+            slot: 'slot.armor.chest',
+            protection
+        }
+        components['minecraft:max_stack_size'] = 1
+
+
         create(
-            {
-                'minecraft:icon': slot,
-                'minecraft:wearable': {
-                    'slot': wearableSlots.get(slot),
-                    'protection': protection
-                },
-                'minecraft:max_stack_size': 1
-            },
+            components,
             'minecraft:item/components'
         )
     })
 })
-
-const wearableSlots: Map<string, string> = new Map()
-wearableSlots.set('helmet', 'slot.armor.head')
-wearableSlots.set('chestplate', 'slot.armor.chest')
-wearableSlots.set('leggings', 'slot.armor.legs')
-wearableSlots.set('boots', 'slot.armor.feet')

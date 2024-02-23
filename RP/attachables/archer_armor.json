@@ -2,18 +2,18 @@
     "format_version": "1.10.0",
     "minecraft:attachable": {
         "description": {
-            "identifier": "class_pvp:warrior_boots",
+            "identifier": "class_pvp:archer_armor",
             "materials": {
                 "default": "armor"
             },
             "textures": {
-                "default": "textures/entity/warrior/warrior_boots"
+                "default": "textures/entity/archer_armor"
             },
             "geometry": {
-                "default": "geometry.template_boots"
+                "default": "geometry.archer_armor"
             },
             "scripts": {
-                "parent_setup": "variable.boot_layer_visible = 0.0;"
+                "parent_setup": "v.helmet_layer_visible = 0.0; v.chest_layer_visible = 0.0; v.leg_layer_visible = 0.0; v.boot_layer_visible = 0.0;"
             },
             "render_controllers": [
                 "controller.render.default"

@@ -2,12 +2,11 @@
     "format_version": "1.20.60",
     "minecraft:item": {
         "description": {
-            "identifier": "class_pvp:warrior_leggings"
+            "identifier": "class_pvp:archer_armor"
         },
         "components": {
             "class_pvp:armor": {
-                "protection": 4,
-                "slot": "leggings"
+                "protection": 12
             }
         }
     }

@@ -1,26 +1,24 @@
-## Warrior Class
-item.class_pvp:warrior_helmet=Warrior Helmet
-item.class_pvp:warrior_chestplate=Warrior Chestplate
-item.class_pvp:warrior_leggings=Warrior Leggings
-item.class_pvp:warrior_boots=Warrior Boots
+## Armor Sets
+item.class_pvp:warrior_armor=Warrior Armor
+item.class_pvp:archer_armor=Archer Armor
 
-## Archer Class
-item.class_pvp:archer_helmet=Archer Helmet
-item.class_pvp:archer_chestplate=Archer Chestplate
-item.class_pvp:archer_leggings=Archer Leggings
-item.class_pvp:archer_boots=Archer Boots
-
+## Items
 item.class_pvp:throwing_dagger=Throwing Dagger
 
+## Entities
 entity.class_pvp:round_timer.name=Round Timer
+entity.class_pvp:throwing_dagger.name=Throwing Dagger
 
+## Vote UI
 ui.title.class_pvp:vote=Vote
 ui.body.class_pvp:vote=Vote for a gamemode
 ui.title.class_pvp:class_select=Select a Class
 
+## Gamemodes
 gamemode.class_pvp:deathmatch=Deathmatch
 gamemode.class_pvp:team_deathmatch=Team Deathmatch
 
+## Classes
 class.class_pvp:warrior=Warrior
 class.class_pvp:archer=Archer
 
@@ -35,5 +33,6 @@ team.class_pvp:white=White
 team.class_pvp:pink=Pink
 team.class_pvp:grey=Gray
 
+## Phrases
 phrases.class_pvp:wins=wins
 phrases.class_pvp:tie=Tie
