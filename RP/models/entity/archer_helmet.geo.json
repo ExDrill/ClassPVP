@@ -15,7 +15,7 @@
 					"name": "head",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 24.5, -4], "size": [8, 8, 8], "inflate": 1, "uv": [0, 0]}
+						{"origin": [-4, 24.5, -4], "size": [8, 8, 8], "inflate": 0.65, "uv": [0, 0]}
 					]
 				},
 				{
@@ -23,7 +23,7 @@
 					"parent": "head",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 24.5, -4], "size": [8, 8, 8], "inflate": 1.25, "uv": [0, 16]}
+						{"origin": [-4, 24.5, -4], "size": [8, 8, 8], "inflate": 1, "uv": [0, 16]}
 					]
 				}
 			]
