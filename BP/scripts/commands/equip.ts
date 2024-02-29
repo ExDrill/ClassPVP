@@ -14,14 +14,14 @@ export default class EquipCommand extends Command {
 
         player.runCommand('clear @s')
         if (chosenClass == 'none') {
-            player.setProperty('class_pvp:player_class', 'none')
+            player.triggerEvent('class_pvp:refresh_player')
             player.sendMessage('Cleared player class!')
         }
         else if (!playerClass) {
             player.sendMessage(`Failed to equip class. Player class '${chosenClass}' does not exist.`)
         }
         else {
-            player.setProperty('class_pvp:player_class', playerClass.getID())
+            player.triggerEvent(`class_pvp:switch_to_${playerClass.getID()}`)
             playerClass.equip(player)
             player.sendMessage(`Successfully equipped '${playerClass.getID()}'`)
         }

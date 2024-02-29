@@ -16,6 +16,7 @@
                     "event": "class_pvp:on_use"
                 }
             },
+            "minecraft:hand_equipped": true,
             "minecraft:cooldown": {
                 "category": "slowness_throwing_dagger",
                 "duration": 2

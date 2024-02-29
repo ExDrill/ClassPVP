@@ -23,13 +23,13 @@
 					],
 					"client_sync": false
 				},
-				"class_pvp:vote": {
+				"class_pvp:player_class": {
 					"type": "enum",
 					"default": "none",
 					"values": [
 						"none",
-						"deathmatch",
-						"team_deathmatch"
+						"warrior",
+						"archer"
 					],
 					"client_sync": false
 				},
@@ -40,25 +40,47 @@
 				}
 			}
 		},
-		"components": {
-			"class_pvp:class_definitions": {
-				"none": {
-					"max_health": 20,
-					"movement_speed": 0.1,
-					"scale": 1.0
+		"component_groups": {
+			"class_pvp:default_stats": {
+				"minecraft:health": {
+					"value": 20,
+					"max": 20
 				},
-				"warrior": {
-					"max_health": 20,
-					"movement_speed": 0.1,
-					"scale": 1.0
+				"minecraft:movement": {
+					"value": 0.1
 				},
-				"archer": {
-					"max_health": 20,
-					"movement_speed": 0.11,
-					"scale": 1.0
+				"minecraft:scale": {
+					"value": 1
 				}
 			},
+			"class_pvp:warrior_stats": {
+				"minecraft:health": {
+					"value": 20,
+					"max": 20
+				},
+				"minecraft:movement": {
+					"value": 0.1
+				},
+				"minecraft:scale": {
+					"value": 1
+				}
+			},
+			"class_pvp:archer_stats": {
+				"minecraft:health": {
+					"value": 20,
+					"max": 20
+				},
+				"minecraft:movement": {
+					"value": 0.11
+				},
+				"minecraft:scale": {
+					"value": 1
+				}
+			}
+		},
+		"components": {
 			"class_pvp:disable_friendly_fire": {},
+
 			"minecraft:health": {
 				"value": 20,
 				"max": 20
@@ -123,45 +145,59 @@
 				"allow_name_tag_renaming": false
 			},
 			"minecraft:physics": {},
-			"minecraft:pushable": {
-				"is_pushable": false,
-				"is_pushable_by_piston": true
-			},
-			"minecraft:insomnia": {
-				"days_until_insomnia": 3
-			},
-			"minecraft:rideable": {
-				"seat_count": 2,
-				"family_types": [
-					"parrot_tame"
-				],
-				"pull_in_entities": true,
-				"seats": [
-					{
-						"position": [
-							0.4,
-							-0.2,
-							-0.1
-						],
-						"min_rider_count": 0,
-						"max_rider_count": 0,
-						"lock_rider_rotation": 0
-					},
-					{
-						"position": [
-							-0.4,
-							-0.2,
-							-0.1
-						],
-						"min_rider_count": 1,
-						"max_rider_count": 2,
-						"lock_rider_rotation": 0
-					}
-				]
-			},
-			"minecraft:conditional_bandwidth_optimization": {},
-			"minecraft:block_climber": {}
+			"minecraft:pushable": {},
+			"minecraft:block_climber": {},
+			"minecraft:conditional_bandwidth_optimization": {}
 		},
-		"events": {}
+		"events": {
+			"class_pvp:refresh_player": {
+				"add": {
+					"component_groups": [
+						"class_pvp:default_stats"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"class_pvp:warrior_stats",
+						"class_pvp:archer_stats"
+					]
+				},
+				"set_property": {
+					"class_pvp:player_class": "'none'"
+				}
+			},
+			"class_pvp:switch_to_warrior": {
+				"add": {
+					"component_groups": [
+						"class_pvp:warrior_stats"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"class_pvp:default_stats",
+						"class_pvp:archer_stats"
+					]
+				},
+				"set_property": {
+					"class_pvp:player_class": "'warrior'"
+				}
+			},
+			"class_pvp:switch_to_archer": {
+				"add": {
+					"component_groups": [
+						"class_pvp:archer_stats"
+					]
+				},
+				"remove": {
+					"component_groups": [
+						"class_pvp:default_stats",
+						"class_pvp:warrior_stats"
+					]
+				},
+				"set_property": {
+					"class_pvp:player_class": "'warrior'"
+				}
+			}
+		}
 	}
 }
