@@ -1,5 +1,5 @@
 import Command from './command'
-import * as Bossbar from '../utils/bossbarHelper'
+import * as Bossbar from '../utils/bossbar'
 
 export default class TimerCommand extends Command {
     public constructor() {

@@ -1,5 +1,5 @@
 import { system, world, Player, WorldInitializeAfterEvent, PlayerSpawnAfterEvent, EntityComponentTypes, ItemStack, ItemLockMode, DisplaySlotId } from '@minecraft/server'
-import * as Events from './gameEvents'
+import * as Events from './game_events'
 import { GAMEMODES } from '../main'
 import { createObjective, setScore, positionObjective, deleteObjective } from '../utils/scoreboard'
 

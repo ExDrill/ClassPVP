@@ -5,7 +5,7 @@ import * as UI from '../ui'
 import Gamemode from '../modes/gamemode'
 import { getTeamColor, TEAMS } from '../utils/teams'
 import Command from '../commands/command'
-import { refreshVoteBoard } from './lobbyEvents'
+import { refreshVoteBoard } from './lobby_events'
 
 const classItems: string[] = [
     'minecraft:stone_sword',

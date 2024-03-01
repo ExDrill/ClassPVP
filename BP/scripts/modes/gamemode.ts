@@ -1,8 +1,8 @@
 import { world, system, EntityComponentTypes } from '@minecraft/server'
 import { removeObjectives } from '../utils/scoreboard'
-import { startIntermission } from '../events/lobbyEvents'
-import * as Events from '../events/gameEvents'
-import * as Bossbar from '../utils/bossbarHelper'
+import { startIntermission } from '../events/lobby_events'
+import * as Events from '../events/game_events'
+import * as Bossbar from '../utils/bossbar'
 import { PLAYER_CLASSES } from '../main'
 import { randomBetween, clearPlayer } from '../utils/helper'
 

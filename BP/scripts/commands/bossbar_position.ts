@@ -1,6 +1,6 @@
 import { ChatSendBeforeEvent } from '@minecraft/server'
 import Command from './command'
-import * as Bossbar from '../utils/bossbarHelper'
+import * as Bossbar from '../utils/bossbar'
 
 export default class BossbarPosCommand extends Command {
     public constructor() {

@@ -1,6 +1,6 @@
 import { ChatSendBeforeEvent, system, Player } from '@minecraft/server'
 import Command, { ArgType } from './command'
-import { endGame, endVote, startGame, stopCountdown } from '../events/lobbyEvents'
+import { endGame, endVote, startGame, stopCountdown } from '../events/lobby_events'
 import Gamemode from '../modes/gamemode'
 
 export default class GameCommand extends Command {

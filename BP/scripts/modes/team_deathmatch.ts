@@ -1,7 +1,7 @@
 import { world, DisplaySlotId, ObjectiveSortOrder, RawMessage } from '@minecraft/server'
 import Gamemode from './gamemode'
 import { createObjective, positionObjective, setScore } from '../utils/scoreboard'
-import * as Events from '../events/gameEvents'
+import * as Events from '../events/game_events'
 import { shuffle, objString } from '../utils/helper'
 import { getTeams, getTeamColor, TEAMS, nameFromId } from '../utils/teams'
 

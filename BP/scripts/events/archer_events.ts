@@ -1,5 +1,4 @@
 import { world, ProjectileHitEntityAfterEvent, ProjectileHitBlockAfterEvent } from '@minecraft/server'
-import { randomBetween } from '../utils/helper'
 
 export function hitEntityEffects(event: ProjectileHitEntityAfterEvent) {
     const entity = event.getEntityHit().entity

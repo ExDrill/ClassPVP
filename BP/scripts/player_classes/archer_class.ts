@@ -1,6 +1,6 @@
 import { world, Player, EquipmentSlot, ItemStack } from '@minecraft/server'
-import * as Events from '../events/archerEvents'
-import PlayerClass from './playerClass'
+import * as Events from '../events/archer_events'
+import PlayerClass from './player_class'
 
 export default class ArcherClass extends PlayerClass {
     public readonly ItemStack
