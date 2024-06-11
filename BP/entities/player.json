@@ -195,7 +195,7 @@
 					]
 				},
 				"set_property": {
-					"class_pvp:player_class": "'warrior'"
+					"class_pvp:player_class": "'archer'"
 				}
 			}
 		}
